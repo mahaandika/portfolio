@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->string('thumbnail'); // Gambar utama untuk kartu portfolio
+            $table->string('url_link')->nullable(); // Link ke website/demo
+            $table->string('github_link')->nullable(); // Opsional: Link repository
+            $table->json('tech_stack')->nullable(); // Menyimpan array teknologi
             $table->timestamps();
         });
     }
