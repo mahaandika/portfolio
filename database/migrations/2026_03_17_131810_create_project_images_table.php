@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // database/migrations/xxxx_xx_xx_create_project_images_table.php
         Schema::create('project_images', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->string('image_path');
+            $table->integer('order')->default(0); // Untuk mengatur urutan tampilan gambar
             $table->timestamps();
         });
     }
