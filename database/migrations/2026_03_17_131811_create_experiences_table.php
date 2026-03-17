@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // database/migrations/xxxx_xx_xx_create_experiences_table.php
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
+            $table->string('company');
+            $table->string('position');
+            $table->date('start_date');
+            $table->date('end_date')->nullable(); // Kosong jika masih bekerja di sana
+            $table->boolean('is_current')->default(false);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
