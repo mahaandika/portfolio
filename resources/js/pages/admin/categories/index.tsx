@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Plus, Search } from 'lucide-react'; // Menggunakan lucide-react untuk icon
+import {
+    Search,
+    Plus,
+    Edit2,
+    Trash2,
+    ChevronLeft,
+    ChevronRight,
+} from 'lucide-react';
 
 interface Category {
     id: number;
     name: string;
-    slug: string;
-    created_at: string;
+    status: 'active' | 'inactive';
 }
 
 interface Props {
@@ -16,101 +22,203 @@ interface Props {
 
 const Index = ({ categories }: Props) => {
     const [searchQuery, setSearchQuery] = useState('');
-
-    // Logika filter sederhana untuk pencarian di sisi client
-    const filteredCategories = categories.filter((category) =>
-        category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+        null,
     );
+
+    const { delete: destroy, processing } = useForm();
+
+    // Filter Logic
+    const filteredData = categories.filter((item) => {
+        const matchesSearch = item.name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase());
+        const matchesStatus =
+            statusFilter === 'all' || item.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+
+    const openDeleteModal = (category: Category) => {
+        setSelectedCategory(category);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = () => {
+        if (selectedCategory) {
+            destroy(`/admin/categories/${selectedCategory.id}`, {
+                onSuccess: () => setShowDeleteModal(false),
+            });
+        }
+    };
 
     return (
         <AppLayout>
-            <Head title="Manage Categories" />
+            <Head title="Category" />
 
-            <div className="p-6">
-                <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold">Daftar Kategori</h1>
-                        <p className="text-sm text-gray-500">
-                            Kelola kategori untuk project portfolio Anda.
-                        </p>
-                    </div>
+            <div className="flex flex-col gap-6 p-4 sm:p-6">
+                <h1 className="text-2xl font-bold text-gray-900">Category</h1>
 
-                    {/* Tombol Add Category */}
-                    <Link
-                        href="admin.categories.create"
-                        className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900"
-                    >
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add Category
-                    </Link>
-                </div>
-
-                {/* Barisan Search & Filter */}
-                <div className="mb-6">
-                    <div className="relative max-w-sm">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <Search className="h-4 w-4 text-gray-400" />
-                        </div>
+                {/* Header Actions */}
+                <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                    <div className="relative w-full md:w-96">
+                        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Cari kategori..."
-                            className="block w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+                            placeholder="Search by name..."
+                            className="w-full rounded-lg border border-gray-200 py-2 pr-4 pl-10 text-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-black"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
+
+                    <div className="flex items-center gap-2">
+                        <select
+                            className="rounded-lg border border-gray-200 py-2 pr-8 pl-3 text-sm outline-none focus:ring-2 focus:ring-black"
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                        >
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <Link
+                            href="/admin/categories/create"
+                            className="flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+                        >
+                            <Plus className="h-4 w-4" />
+                            Add Category
+                        </Link>
+                    </div>
                 </div>
 
-                <div className="overflow-hidden border border-gray-200 bg-white shadow-sm sm:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                                    Nama
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
-                                    Slug
-                                </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase">
-                                    Aksi
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white">
-                            {filteredCategories.map((category) => (
-                                <tr
-                                    key={category.id}
-                                    className="transition-colors hover:bg-gray-50"
-                                >
-                                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-900">
-                                        {category.name}
-                                    </td>
-                                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
-                                        {category.slug}
-                                    </td>
-                                    <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
-                                        <Link
-                                            href={`/admin/categories/${category.id}/edit`}
-                                            className="mr-3 text-indigo-600 hover:text-indigo-900"
-                                        >
-                                            Edit
-                                        </Link>
-                                    </td>
+                {/* Table Section - Responsive with horizontal scroll on small screens */}
+                <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-sm">
+                            <thead className="border-b border-gray-100 bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-4 font-semibold text-gray-700">
+                                        Category Name
+                                    </th>
+                                    <th className="px-6 py-4 font-semibold text-gray-700">
+                                        Status
+                                    </th>
+                                    <th className="px-6 py-4 text-right font-semibold text-gray-700">
+                                        Action
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {filteredData.map((category) => (
+                                    <tr
+                                        key={category.id}
+                                        className="transition-colors hover:bg-gray-50"
+                                    >
+                                        <td className="px-6 py-4 font-medium text-gray-900">
+                                            {category.name}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <span
+                                                className={`rounded-md px-2.5 py-1 text-xs font-medium capitalize ${
+                                                    category.status === 'active'
+                                                        ? 'bg-green-50 text-green-600'
+                                                        : 'bg-red-50 text-red-600'
+                                                }`}
+                                            >
+                                                {category.status}
+                                            </span>
+                                        </td>
+                                        <td className="flex justify-end gap-2 px-6 py-4 text-right">
+                                            <Link
+                                                href={`/admin/categories/${category.id}/edit`}
+                                                className="rounded-md border border-gray-200 px-3 py-1 text-xs font-medium transition-all hover:bg-gray-50"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button
+                                                onClick={() =>
+                                                    openDeleteModal(category)
+                                                }
+                                                className="rounded-md bg-red-600 px-3 py-1 text-xs font-medium text-white transition-all hover:bg-red-700"
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
-                    {filteredCategories.length === 0 && (
-                        <div className="py-12 text-center text-gray-500">
-                            <p className="text-lg">Kategori tidak ditemukan.</p>
-                            <p className="text-sm">
-                                Coba kata kunci lain atau tambah kategori baru.
-                            </p>
+                    {/* Pagination - UI Only (Matches Image) */}
+                    <div className="flex flex-col items-center justify-between gap-4 border-t border-gray-100 px-6 py-4 text-gray-500 sm:flex-row">
+                        <p className="text-xs">
+                            Showing{' '}
+                            <span className="font-semibold text-gray-900">
+                                1
+                            </span>{' '}
+                            to{' '}
+                            <span className="font-semibold text-gray-900">
+                                {filteredData.length}
+                            </span>{' '}
+                            of{' '}
+                            <span className="font-semibold text-gray-900">
+                                {filteredData.length}
+                            </span>{' '}
+                            results
+                        </p>
+                        <div className="flex items-center gap-1">
+                            <button
+                                className="rounded-md border border-gray-100 p-2 hover:bg-gray-50 disabled:opacity-50"
+                                disabled
+                            >
+                                <ChevronLeft className="h-4 w-4" />
+                            </button>
+                            <button className="rounded-md bg-blue-600 px-3 py-1 text-sm font-medium text-white">
+                                1
+                            </button>
+                            <button className="rounded-md border border-gray-100 p-2 hover:bg-gray-50">
+                                <ChevronRight className="h-4 w-4" />
+                            </button>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
+
+            {/* Simple Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+                    <div className="w-full max-w-sm animate-in rounded-xl bg-white p-6 shadow-xl duration-200 fade-in zoom-in">
+                        <h3 className="text-lg font-bold text-gray-900">
+                            Confirm Delete
+                        </h3>
+                        <p className="mt-2 text-sm text-gray-500">
+                            Are you sure you want to delete{' '}
+                            <span className="font-semibold text-black">
+                                "{selectedCategory?.name}"
+                            </span>
+                            ? This action cannot be undone.
+                        </p>
+                        <div className="mt-6 flex justify-end gap-3">
+                            <button
+                                onClick={() => setShowDeleteModal(false)}
+                                className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-100"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                disabled={processing}
+                                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-red-700 disabled:opacity-50"
+                            >
+                                {processing ? 'Deleting...' : 'Delete Now'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AppLayout>
     );
 };
