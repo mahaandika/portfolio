@@ -58,8 +58,16 @@ const Index = ({ projects }: Props) => {
 
     const confirmDelete = () => {
         if (selectedProject) {
+            // Gunakan nama route yang sesuai dengan prefix 'admin.'
             destroy(`/admin/projects/${selectedProject.id}`, {
-                onSuccess: () => setShowDeleteModal(false),
+                onSuccess: () => {
+                    setShowDeleteModal(false);
+                    // Opsi: Berikan notifikasi toast atau alert di sini
+                },
+                onError: (err) => {
+                    console.error('Gagal menghapus:', err);
+                    alert('Terjadi kesalahan saat menghapus project.');
+                },
             });
         }
     };
