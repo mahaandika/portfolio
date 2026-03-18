@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes/admin';
 import type { NavItem } from '@/types';
-import { index } from '@/routes/admin/categories';
 
 const mainNavItems: NavItem[] = [
     {
@@ -25,7 +24,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Category',
-        href: index(),
+        href: '/admin/categories',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Experience',
+        href: '/admin/experiences',
         icon: LayoutGrid,
     },
 ];
