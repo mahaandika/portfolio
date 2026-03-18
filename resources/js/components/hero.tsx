@@ -5,10 +5,10 @@ export default function Hero() {
         /* H-screen memastikan tinggi tepat 100vh */
         <section className="relative flex h-screen min-h-[600px] flex-col justify-between overflow-hidden bg-primary p-6 md:p-12 lg:flex-row lg:items-center">
             {/* --- Dekorasi Teks Vertikal --- */}
-            <div className="absolute top-12 left-8 hidden flex-col space-y-4 font-heading text-xl tracking-widest text-secondary opacity-20 lg:flex">
+            {/* <div className="absolute top-12 left-8 hidden flex-col space-y-4 font-heading text-xl tracking-widest text-secondary opacity-20 lg:flex">
                 <span className="[writing-mode:vertical-rl]">TASKTO</span>
                 <span className="[writing-mode:vertical-rl]">タスクト</span>
-            </div>
+            </div> */}
 
             {/* --- SISI KIRI: Headline --- */}
             <div className="z-10 mt-12 lg:mt-0 lg:w-1/3">
@@ -16,20 +16,21 @@ export default function Hero() {
                     initial={{ x: -50, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.8 }}
-                    className="font-heading text-5xl leading-[0.9] tracking-tighter text-secondary md:text-7xl lg:text-8xl"
+                    className="font-heading text-5xl leading-[0.9] text-secondary md:text-7xl lg:text-8xl"
                 >
-                    Turn <br /> Tasks <br /> Into <br /> Adventures
+                    Turn <br /> Concept <br /> Into <br /> Creation
                 </motion.h1>
 
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
-                    className="mt-8 max-w-xs border-t border-secondary/20 pt-8"
+                    className="mt-8 border-t border-secondary/20 pt-8 lg:max-w-sm"
                 >
                     <p className="font-body text-lg leading-relaxed text-secondary">
-                        Manage your tasks, level up with your team, and make
-                        every project feel like a game.
+                        I design and build digital experiences that look great
+                        and work flawlessly—turning ideas into engaging,
+                        memorable interfaces.
                     </p>
                 </motion.div>
             </div>
@@ -70,10 +71,11 @@ export default function Hero() {
                     initial={{ x: 50, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="max-w-xs font-body text-lg text-secondary"
+                    className="font-body text-lg text-secondary lg:max-w-md"
                 >
-                    With Taskto, every task is an adventure, and you're the
-                    hero.
+                    Every project is crafted with purpose, balancing design,
+                    performance, and usability to help brands stand out and
+                    grow.
                 </motion.p>
 
                 <motion.button
@@ -89,7 +91,7 @@ export default function Hero() {
             <div className="absolute top-8 left-1/2 flex -translate-x-1/2 items-center space-x-3">
                 <span className="text-xl text-secondary">✦</span>
                 <span className="font-heading text-3xl tracking-tight text-secondary">
-                    Taskto
+                    Agung Andika
                 </span>
                 <span className="text-xl text-secondary">✦</span>
             </div>
