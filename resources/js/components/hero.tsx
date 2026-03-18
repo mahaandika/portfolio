@@ -1,8 +1,52 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 
 export default function Hero() {
+    // Daftar kata yang akan berganti di baris terakhir
+    const words = ['Creation', 'Innovation', 'Solution', 'Experience'];
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const [displayedText, setDisplayedText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [speed, setSpeed] = useState(100);
+
+    useEffect(() => {
+        const handleTyping = () => {
+            const fullText = words[currentWordIndex];
+
+            if (!isDeleting) {
+                // Mode Mengetik
+                setDisplayedText(
+                    fullText.substring(0, displayedText.length + 1),
+                );
+                setSpeed(100); // Kecepatan normal saat mengetik
+
+                if (displayedText === fullText) {
+                    // Jika sudah selesai mengetik satu kata, diam sebentar sebelum hapus
+                    setTimeout(() => setIsDeleting(true), 2000);
+                    setSpeed(500); // Jeda diam
+                }
+            } else {
+                // Mode Menghapus
+                setDisplayedText(
+                    fullText.substring(0, displayedText.length - 1),
+                );
+                setSpeed(50); // Kecepatan lebih tinggi saat menghapus (seperti backspace)
+
+                if (displayedText === '') {
+                    setIsDeleting(false);
+                    setCurrentWordIndex((prev) => (prev + 1) % words.length);
+                    setSpeed(200);
+                }
+            }
+        };
+
+        const timer = setTimeout(handleTyping, speed);
+        return () => clearTimeout(timer);
+    }, [displayedText, isDeleting, currentWordIndex]);
+
+    const staticLines = ['Turn', 'Concept', 'Into'];
+
     return (
-        /* H-screen tetap 100vh */
         <section className="relative flex h-screen min-h-[600px] flex-col justify-between overflow-hidden bg-primary p-6 md:flex-row md:items-center md:p-12">
             {/* --- Logo Header (Agung Andika) --- */}
             <div className="absolute top-6 left-1/2 z-50 flex -translate-x-1/2 items-center space-x-2 md:top-8 md:space-x-3">
@@ -15,17 +59,49 @@ export default function Hero() {
 
             {/* --- SISI KIRI: Headline & Paragraf --- */}
             <div className="z-10 mt-15 flex flex-col items-center text-center md:mt-0 md:w-1/3 md:items-start md:text-left">
-                <motion.h1
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.8 }}
-                    /* Font diperbesar mulai dari MD */
-                    className="font-heading text-2xl leading-[1.1] text-secondary sm:text-4xl md:text-6xl md:leading-[0.9] lg:text-8xl"
-                >
-                    Turn <br className="hidden md:block" />
-                    Concept <br className="hidden md:block" />
-                    Into <br className="hidden md:block" />
-                    Creation
+                <motion.h1 className="font-heading text-2xl leading-[1.1] text-secondary sm:text-4xl md:text-6xl lg:text-8xl">
+                    {/* 1. Baris Statis (Turn, Concept, Into) */}
+                    {staticLines.map((line, idx) => (
+                        <React.Fragment key={idx}>
+                            <span className="inline-block">
+                                {line.split('').map((char, charIdx) => (
+                                    <motion.span
+                                        key={charIdx}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{
+                                            duration: 0.05,
+                                            delay: idx * 0.4 + charIdx * 0.05,
+                                        }}
+                                    >
+                                        {char}
+                                    </motion.span>
+                                ))}
+                            </span>
+                            <span className="md:hidden"> </span>
+                            <br className="hidden md:block" />
+                        </React.Fragment>
+                    ))}
+
+                    {/* 2. Baris Dinamis (Loop Typing & Deleting) */}
+                    <span className="inline-block min-h-[1em] text-secondary">
+                        {displayedText.split('').map((char, charIdx) => (
+                            <motion.span
+                                key={charIdx}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.05 }}
+                            >
+                                {char}
+                            </motion.span>
+                        ))}
+                        {/* Kursor yang aktif hanya di baris dinamis ini */}
+                        <motion.span
+                            animate={{ opacity: [0, 1, 0] }}
+                            transition={{ duration: 0.8, repeat: Infinity }}
+                            className="ml-1 inline-block h-[0.7em] w-[2px] bg-secondary align-middle md:w-[3px]"
+                        />
+                    </span>
                 </motion.h1>
 
                 <motion.div
@@ -40,7 +116,6 @@ export default function Hero() {
                         memorable interfaces.
                     </p>
                 </motion.div>
-
                 {/* Tombol Explore HANYA muncul di Mobile (dibawah MD) */}
                 <motion.button
                     whileHover={{ scale: 1.05 }}
