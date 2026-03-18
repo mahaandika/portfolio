@@ -48,7 +48,11 @@ const Index = ({ categories }: Props) => {
     const confirmDelete = () => {
         if (selectedCategory) {
             destroy(`/admin/categories/${selectedCategory.id}`, {
-                onSuccess: () => setShowDeleteModal(false),
+                onSuccess: () => {
+                    setShowDeleteModal(false);
+                    // Opsi: Tambahkan notifikasi sukses di sini jika perlu
+                },
+                onFinish: () => setSelectedCategory(null),
             });
         }
     };
