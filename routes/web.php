@@ -20,7 +20,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::inertia('dashboard', 'admin/dashboard')->name('dashboard');
         Route::resource('projects', ProjectController::class);
+
         Route::resource('categories', CategoryController::class);
+        Route::get('/admin/categories/create', [CategoryController::class, 'create']);
+        Route::post('/admin/categories', [CategoryController::class, 'store']);
+        
         Route::resource('experiences', ExperienceController::class);
     });
 });
