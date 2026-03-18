@@ -3,13 +3,16 @@
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
 // Halaman Depan Publik
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+// Route::inertia('/', 'welcome', [
+//     'canRegister' => Features::enabled(Features::registration()),
+// ])->name('home');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Grup Route yang Memerlukan Login
 Route::middleware(['auth', 'verified'])->group(function () {
