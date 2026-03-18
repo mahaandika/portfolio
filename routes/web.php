@@ -22,6 +22,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('projects', ProjectController::class);
         Route::get('/admin/projects/create', [ExperienceController::class, 'create']);
         Route::post('/admin/projects', [ExperienceController::class, 'store']);
+        Route::get('/admin/projects/{id}/edit', [CategoryController::class, 'edit']);
+        Route::put('/admin/projects/{id}', [CategoryController::class, 'update']);
+        Route::delete('/admin/projects/{id}', [CategoryController::class, 'destroy']);
+        Route::delete('project-images/{projectImage}', [ProjectController::class, 'deleteImage'])
+        ->name('project-images.destroy');
 
         Route::resource('categories', CategoryController::class);
         Route::get('/admin/categories/create', [CategoryController::class, 'create']);
