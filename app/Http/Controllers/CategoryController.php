@@ -51,20 +51,50 @@ class CategoryController extends Controller
     /**
      * Menampilkan detail kategori (jika diperlukan).
      */
-    public function show(Category $category): Response
+    public function edit($id)
     {
-        return Inertia::render('admin/categories/show', [
+        // Cari kategori berdasarkan ID
+        $category = Category::findOrFail($id);
+
+        return Inertia::render('admin/categories/edit', [
             'category' => $category
         ]);
     }
 
-    /**
-     * Menampilkan form edit kategori.
-     */
-    public function edit(Category $category): Response
+/**
+ * Memproses pembaruan data kategori.
+ */
+    public function update(Request $request, $id)
     {
-        return Inertia::render('admin/categories/edit', [
-            'category' => $category
+        $category = Category::findOrFail($id);
+
+        // Validasi input
+        // Pastikan unique name mengabaikan ID kategori yang sedang diedit
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255|unique:categories,name,' . $id,
+            'status' => 'required|in:active,inactive',
         ]);
+
+        // Update data
+        $category->update([
+            'name'   => $validated['name'],
+            'status' => $validated['status'],
+            'slug'   => Str::slug($validated['name']),
+        ]);
+
+        // Redirect ke index dengan pesan sukses (opsional)
+        return redirect('/admin/categories')->with('success', 'Category updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        // Cari kategori berdasarkan ID
+        $category = Category::findOrFail($id);
+
+        // Hapus kategori
+        $category->delete();
+
+        // Redirect kembali ke halaman index
+        return redirect('/admin/categories')->with('success', 'Category deleted successfully');
     }
 }
