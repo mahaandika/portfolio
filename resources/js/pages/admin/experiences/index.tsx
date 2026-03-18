@@ -53,7 +53,11 @@ const Index = ({ experiences }: Props) => {
     const confirmDelete = () => {
         if (selectedExp) {
             destroy(`/admin/experiences/${selectedExp.id}`, {
-                onSuccess: () => setShowDeleteModal(false),
+                onSuccess: () => {
+                    setShowDeleteModal(false);
+                    setSelectedExp(null);
+                },
+                preserveScroll: true, // Agar posisi scroll tidak lompat saat menghapus
             });
         }
     };
