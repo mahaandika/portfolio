@@ -32,6 +32,11 @@ const mainNavItems: NavItem[] = [
         href: '/admin/experiences',
         icon: LayoutGrid,
     },
+    {
+        title: 'Projects',
+        href: '/admin/projects',
+        icon: LayoutGrid,
+    },
 ];
 
 export function AppSidebar() {
