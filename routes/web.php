@@ -24,7 +24,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::get('/admin/categories/create', [CategoryController::class, 'create']);
         Route::post('/admin/categories', [CategoryController::class, 'store']);
-        
+        Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit']);
+        Route::put('/admin/categories/{id}', [CategoryController::class, 'update']);
+        Route::delete('/admin/categories/{id}', [CategoryController::class, 'destroy']);
+
         Route::resource('experiences', ExperienceController::class);
     });
 });
