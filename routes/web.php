@@ -29,6 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/admin/categories/{id}', [CategoryController::class, 'destroy']);
 
         Route::resource('experiences', ExperienceController::class);
+        Route::get('/admin/experiences/create', [ExperienceController::class, 'create']);
+        Route::post('/admin/experiences', [ExperienceController::class, 'store']);
     });
 });
 
