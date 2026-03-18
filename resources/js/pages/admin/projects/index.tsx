@@ -15,6 +15,12 @@ interface Category {
     name: string;
 }
 
+// 1. Update Interface
+interface ProjectImage {
+    id: number;
+    image_path: string;
+}
+
 interface Project {
     id: number;
     title: string;
@@ -22,6 +28,7 @@ interface Project {
     thumbnail: string;
     url_link: string | null;
     tech_stack: string[];
+    images: ProjectImage[];
 }
 
 interface Props {
@@ -101,6 +108,10 @@ const Index = ({ projects }: Props) => {
                                         Category
                                     </th>
                                     <th className="px-6 py-4 font-semibold text-gray-700">
+                                        Gallery Preview
+                                    </th>{' '}
+                                    {/* Kolom Baru */}
+                                    <th className="px-6 py-4 font-semibold text-gray-700">
                                         Tech Stack
                                     </th>
                                     <th className="px-6 py-4 text-right font-semibold text-gray-700">
@@ -139,6 +150,40 @@ const Index = ({ projects }: Props) => {
                                                 </div>
                                             </div>
                                         </td>
+
+                                        <td className="px-6 py-4">
+                                            <div className="flex -space-x-2 overflow-hidden">
+                                                {project.images &&
+                                                project.images.length > 0 ? (
+                                                    project.images
+                                                        .slice(0, 4)
+                                                        .map((img, idx) => (
+                                                            <div
+                                                                key={img.id}
+                                                                className="inline-block h-8 w-8 rounded-full border-2 border-white bg-gray-100 ring-2 ring-transparent transition-transform hover:z-10 hover:scale-110"
+                                                            >
+                                                                <img
+                                                                    src={`/storage/${img.image_path}`}
+                                                                    alt={`Gallery ${idx}`}
+                                                                    className="h-full w-full rounded-full object-cover"
+                                                                />
+                                                            </div>
+                                                        ))
+                                                ) : (
+                                                    <span className="text-[10px] text-gray-400">
+                                                        No gallery
+                                                    </span>
+                                                )}
+                                                {project.images?.length > 4 && (
+                                                    <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gray-800 text-[10px] font-bold text-white">
+                                                        +
+                                                        {project.images.length -
+                                                            4}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </td>
+
                                         <td className="px-6 py-4">
                                             <span className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">
                                                 {project.category?.name ||
