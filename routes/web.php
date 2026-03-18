@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('experiences', ExperienceController::class);
         Route::get('/admin/experiences/create', [ExperienceController::class, 'create']);
         Route::post('/admin/experiences', [ExperienceController::class, 'store']);
+        Route::get('/admin/experiences/{id}/edit', [ExperienceController::class, 'edit']);
+        Route::put('/admin/experiences/{id}', [ExperienceController::class, 'update']);
     });
 });
 
