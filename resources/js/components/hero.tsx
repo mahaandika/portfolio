@@ -29,7 +29,7 @@ export default function Hero() {
                 >
                     <p className="font-body text-lg leading-relaxed text-secondary">
                         I design and build digital experiences that look great
-                        and work flawlessly—turning ideas into engaging,
+                        and work flawlessly. Turning ideas into engaging,
                         memorable interfaces.
                     </p>
                 </motion.div>
