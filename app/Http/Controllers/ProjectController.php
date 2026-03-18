@@ -162,4 +162,33 @@ class ProjectController extends Controller
             return back()->with('error', 'Failed to delete image');
         }
     }
+
+    public function destroy(Project $project)
+    {
+        try {
+            return DB::transaction(function () use ($project) {
+                // 1. Hapus Semua Foto di Gallery (File Fisik)
+                foreach ($project->images as $image) {
+                    if (Storage::disk('public')->exists($image->image_path)) {
+                        Storage::disk('public')->delete($image->image_path);
+                    }
+                }
+
+                // 2. Hapus Thumbnail Utama (File Fisik)
+                if ($project->thumbnail && Storage::disk('public')->exists($project->thumbnail)) {
+                    Storage::disk('public')->delete($project->thumbnail);
+                }
+
+                // 3. Hapus Data dari Database
+                // Karena migration kita pakai onDelete('cascade'), 
+                // data di tabel project_images akan otomatis ikut terhapus saat $project->delete() dipanggil.
+                $project->delete();
+
+                return redirect()->route('admin.projects.index')
+                    ->with('success', 'Project dan seluruh medianya berhasil dihapus secara permanen.');
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menghapus project: ' . $e->getMessage());
+        }
+    }
 }
