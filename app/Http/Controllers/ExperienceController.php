@@ -71,4 +71,16 @@ class ExperienceController extends Controller
 
         return redirect('/admin/experiences')->with('success', 'Experience updated successfully!');
     }
+
+    public function destroy($id)
+    {
+        // Cari data berdasarkan ID
+        $experience = Experience::findOrFail($id);
+
+        // Hapus data
+        $experience->delete();
+
+        // Kembali ke halaman index dengan pesan sukses
+        return redirect('/admin/experiences')->with('success', 'Experience deleted successfully!');
+    }
 }
