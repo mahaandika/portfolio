@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -26,11 +27,27 @@ class CategoryController extends Controller
     /**
      * Menampilkan form untuk membuat kategori baru.
      */
-    public function create(): Response
+    public function create(): \Inertia\Response
     {
+        // Merender file Pages/Admin/Categories/Create.tsx
         return Inertia::render('admin/categories/create');
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255|unique:categories,name',
+            'status' => 'required|in:active,inactive', // Pastikan status divalidasi
+        ]);
+
+        Category::create([
+            'name'   => $validated['name'],
+            'status' => $validated['status'], // Baris ini HARUS ADA
+            'slug'   => \Illuminate\Support\Str::slug($validated['name']),
+        ]);
+
+        return redirect('/admin/categories');
+    }
     /**
      * Menampilkan detail kategori (jika diperlukan).
      */
