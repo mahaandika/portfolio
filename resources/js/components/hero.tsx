@@ -136,21 +136,33 @@ export default function Hero() {
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 1, ease: 'easeOut' }}
                         /* Gambar membesar di MD */
-                        className="z-10 mb-0 max-h-[58vh] w-44 object-contain md:max-h-[70vh] md:w-64 lg:max-h-[75vh] lg:w-80"
+                        className="z-10 mb-0 max-h-[58vh] w-44 object-contain md:-mb-10 md:max-h-[70vh] md:w-64 lg:max-h-[80vh] lg:w-80"
                     />
 
                     {/* Setengah Lingkaran Scroll */}
                     <motion.div
-                        whileHover={{ y: -5 }}
-                        /* Translate disesuaikan agar pas di layar MD ke atas */
-                        className="absolute bottom-0 z-20 flex h-32 w-32 translate-y-4 cursor-pointer flex-col items-center rounded-full border border-secondary bg-primary pt-4 shadow-lg sm:translate-y-2/5 md:h-44 md:w-44 md:translate-y-1/2 lg:h-52 lg:w-52"
+                        /* scale sedikit saat hover agar tetap interaktif */
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        /* Menggunakan bottom-0 agar menempel sempurna di bawah */
+                        className="absolute bottom-0 z-20 flex cursor-pointer items-center space-x-4 bg-secondary px-10 py-5 whitespace-nowrap shadow-[0px_-4px_20px_0px_rgba(0,0,0,0.1)] transition-all md:-mb-12 md:px-14 md:py-6"
                     >
-                        <span className="font-body text-xs font-bold text-secondary md:mt-4 md:text-sm lg:mt-5 lg:text-base">
-                            Scroll More
+                        <span className="font-heading text-sm font-bold tracking-widest text-primary uppercase md:text-base">
+                            Keep Scrolling
                         </span>
-                        <span className="mt-2 animate-bounce text-lg text-secondary md:mt-3 lg:text-xl">
+
+                        <motion.span
+                            /* Animasi panah ke bawah (karena ini scroll) */
+                            animate={{ y: [0, 5, 0] }}
+                            transition={{
+                                repeat: Infinity,
+                                duration: 1.5,
+                                ease: 'easeInOut',
+                            }}
+                            className="text-lg text-primary md:text-xl"
+                        >
                             ↓
-                        </span>
+                        </motion.span>
                     </motion.div>
                 </div>
             </div>
@@ -171,7 +183,7 @@ export default function Hero() {
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="rounded-xl bg-secondary px-8 py-4 font-body text-lg font-semibold text-primary transition-all hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]"
+                    className="rounded-xl bg-secondary px-8 py-4 font-body text-lg font-semibold text-primary transition-all hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] md:text-sm lg:text-base"
                 >
                     My Creative Journey
                 </motion.button>
