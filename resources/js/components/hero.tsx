@@ -8,6 +8,63 @@ export default function Hero() {
     const [displayedText, setDisplayedText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
     const [speed, setSpeed] = useState(100);
+    const name = 'Agung Andika';
+
+    // Varian untuk kontainer (parent) agar bisa men-trigger semua anak (ikon & huruf)
+    const containerVariants = {
+        initial: { y: 0 },
+        hover: { y: 0 },
+    };
+
+    const letterVariants = {
+        // --- Animasi Saat Pertama Kali Muncul ---
+        initial: {
+            y: 20,
+            opacity: 0,
+        },
+        animate: (i: any) => ({
+            y: 0,
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+                delay: i * 0.05, // Efek muncul satu per satu
+                ease: 'easeOut',
+            },
+        }),
+        // --- Animasi Saat Hover ---
+        hover: (i: any) => ({
+            y: -8,
+            transition: {
+                duration: 0.3,
+                delay: i * 0.02, // Kecepatan gelombang saat hover lebih cepat
+                ease: 'easeOut',
+            },
+        }),
+    };
+
+    const sparkleVariants = {
+        initial: {
+            scale: 0,
+            opacity: 0,
+            rotate: -180,
+        },
+        animate: {
+            scale: 1,
+            opacity: 1,
+            rotate: 0,
+            transition: {
+                duration: 0.8,
+                delay: 0.5, // Muncul setelah teks mulai terlihat
+                type: 'spring',
+                stiffness: 200,
+            },
+        },
+        hover: {
+            rotate: 180,
+            scale: 1.2,
+            transition: { duration: 0.5 },
+        },
+    };
 
     useEffect(() => {
         const handleTyping = () => {
@@ -49,13 +106,43 @@ export default function Hero() {
     return (
         <section className="relative flex h-screen min-h-[600px] flex-col justify-between overflow-hidden bg-primary p-6 md:flex-row md:items-center md:p-12">
             {/* --- Logo Header (Agung Andika) --- */}
-            <div className="absolute top-6 left-1/2 z-50 flex -translate-x-1/2 items-center space-x-2 md:top-8 md:space-x-3">
-                <span className="text-lg text-secondary md:text-xl">✦</span>
-                <span className="font-heading text-xl tracking-tight whitespace-nowrap text-secondary md:text-3xl">
-                    Agung Andika
-                </span>
-                <span className="text-lg text-secondary md:text-xl">✦</span>
-            </div>
+            <motion.div
+                variants={containerVariants}
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
+                className="absolute top-6 left-1/2 z-50 flex -translate-x-1/2 cursor-default items-center space-x-2 md:top-8 md:space-x-3"
+            >
+                <motion.span
+                    variants={sparkleVariants}
+                    className="text-lg text-secondary md:text-xl"
+                >
+                    ✦
+                </motion.span>
+
+                <h1 className="flex font-heading text-xl tracking-tight text-secondary md:text-3xl">
+                    {name.split('').map((char, i) => (
+                        <motion.span
+                            key={i}
+                            custom={i}
+                            variants={letterVariants}
+                            className="inline-block"
+                            style={{
+                                whiteSpace: char === ' ' ? 'pre' : 'normal',
+                            }}
+                        >
+                            {char}
+                        </motion.span>
+                    ))}
+                </h1>
+
+                <motion.span
+                    variants={sparkleVariants}
+                    className="text-lg text-secondary md:text-xl"
+                >
+                    ✦
+                </motion.span>
+            </motion.div>
 
             {/* --- SISI KIRI: Headline & Paragraf --- */}
             <div className="z-10 mt-15 flex flex-col items-center text-center md:mt-0 md:w-1/3 md:items-start md:text-left">
