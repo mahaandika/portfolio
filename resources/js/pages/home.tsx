@@ -15,7 +15,7 @@ export default function Welcome({ categories, experiences, projects }: Props) {
         <div>
             <Hero />
             <About />
-            <Expertise />
+            <Expertise experiences={experiences} />
         </div>
     );
 }
