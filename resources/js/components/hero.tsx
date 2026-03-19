@@ -1,7 +1,41 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import {
+    AnimatePresence,
+    motion,
+    useScroll,
+    useSpring,
+    useTransform,
+} from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 export default function Hero() {
+    // 1. Tangkap progress scroll (0 sampai 1)
+    const { scrollY } = useScroll();
+
+    // 2. Buat transformasi berdasarkan jarak scroll (pixel)
+    // Saat scroll 0px -> 500px:
+    // 1. Definisikan nilai mentah (Raw) menggunakan useTransform
+    const rawTextY = useTransform(scrollY, [0, 500], [0, -100]);
+    const rawCharY = useTransform(scrollY, [0, 500], [0, 50]);
+    const rawOpacityHero = useTransform(scrollY, [0, 300], [1, 0]);
+    const rawScaleChar = useTransform(scrollY, [0, 500], [1, 1.5]);
+    const rawScrollBtnOpacity = useTransform(scrollY, [0, 100], [1, 0]);
+    const rawScrollBtnY = useTransform(scrollY, [0, 100], [0, 50]);
+
+    // 2. Bungkus semuanya dengan useSpring
+    const springConfig = {
+        stiffness: 100,
+        damping: 10,
+        mass: 1,
+        restDelta: 0.001,
+    };
+
+    const textY = useSpring(rawTextY, springConfig);
+    const charY = useSpring(rawCharY, springConfig);
+    const opacityHero = useSpring(rawOpacityHero, springConfig);
+    const scaleChar = useSpring(rawScaleChar, springConfig);
+    const scrollBtnOpacity = rawScrollBtnOpacity;
+    const scrollBtnY = rawScrollBtnY;
+
     // Daftar kata yang akan berganti di baris terakhir
     const words = ['Creation', 'Innovation', 'Solution', 'Experience'];
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -155,7 +189,10 @@ export default function Hero() {
             </motion.div>
 
             {/* --- SISI KIRI: Headline & Paragraf --- */}
-            <div className="z-10 mt-15 flex flex-col items-center text-center md:mt-0 md:w-1/3 md:items-start md:text-left">
+            <motion.div
+                style={{ y: textY, opacity: opacityHero }}
+                className="z-10 mt-15 flex flex-col items-center text-center md:mt-0 md:w-1/3 md:items-start md:text-left"
+            >
                 <motion.h1 className="font-heading text-xl leading-[1.1] text-secondary sm:text-4xl md:text-6xl lg:text-8xl">
                     {/* 1. Baris Statis (Turn, Concept, Into) */}
                     {staticLines.map((line, idx) => (
@@ -222,12 +259,13 @@ export default function Hero() {
                 >
                     My Creative Journey
                 </motion.button>
-            </div>
+            </motion.div>
 
             {/* --- TENGAH: Karakter & Scroll Circle --- */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-full items-end justify-center md:relative md:inset-auto md:h-full md:w-1/3">
                 <div className="pointer-events-auto relative flex h-full w-full items-end justify-center">
                     <motion.img
+                        style={{ y: charY, scale: scaleChar }}
                         src="/img/hero.png"
                         alt="Character"
                         initial={{ y: 100, opacity: 0 }}
@@ -239,6 +277,13 @@ export default function Hero() {
 
                     {/* Setengah Lingkaran Scroll */}
                     <motion.div
+                        onClick={() =>
+                            window.scrollTo({
+                                top: window.innerHeight,
+                                behavior: 'smooth',
+                            })
+                        }
+                        style={{ opacity: scrollBtnOpacity, y: scrollBtnY }}
                         /* scale sedikit saat hover agar tetap interaktif */
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
@@ -266,7 +311,10 @@ export default function Hero() {
             </div>
 
             {/* --- SISI KANAN: CTA & Deskripsi (MUNCUL MULAI DARI MD) --- */}
-            <div className="z-10 hidden flex-col items-end space-y-6 text-right md:flex md:w-1/3">
+            <motion.div
+                style={{ y: textY, opacity: opacityHero }}
+                className="z-10 hidden flex-col items-end space-y-6 text-right md:flex md:w-1/3"
+            >
                 <motion.p
                     initial={{ x: 50, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
@@ -286,7 +334,7 @@ export default function Hero() {
                 >
                     My Creative Journey
                 </motion.button>
-            </div>
+            </motion.div>
         </section>
     );
 }
