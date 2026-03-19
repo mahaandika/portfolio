@@ -25,7 +25,7 @@ export default function Expertise({ experiences }: ExpertiseProps) {
                 <span className="mb-4 block font-body text-sm tracking-widest text-gray-500 uppercase">
                     // Experience
                 </span>
-                <h2 className="font-heading text-5xl leading-tight font-bold md:text-7xl">
+                <h2 className="font-heading text-4xl leading-tight font-bold md:text-7xl">
                     MY JOURNEY OF CREATION
                 </h2>
             </div>
@@ -79,7 +79,7 @@ function ExperienceItem({ data }: { data: Experience }) {
             {/* 2. Kolom Utama */}
             <div className="flex flex-1 flex-col">
                 <div className="flex items-baseline gap-4">
-                    <h3 className="font-heading text-3xl font-medium uppercase md:text-5xl lg:text-6xl">
+                    <h3 className="font-heading text-3xl font-medium uppercase md:text-5xl lg:text-5xl">
                         {data.position}
                     </h3>
                 </div>
