@@ -1,31 +1,23 @@
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
-// Simulasi data dari Database/Model Laravel
-const experiences = [
-    {
-        id: 1,
-        company: 'Taka Creative',
-        position: 'Full-stack Developer',
-        start_date: '2025-01',
-        end_date: null,
-        is_current: true,
-        description:
-            'Developing professional web solutions and managing branding projects for Bali-based clients.',
-    },
-    {
-        id: 2,
-        company: 'International School',
-        position: 'ICT Teacher',
-        start_date: '2024-07',
-        end_date: '2025-01',
-        is_current: false,
-        description:
-            'Providing English-instruction for grades 6-9, focusing on algorithms and pseudocode.',
-    },
-];
+// 1. Definisikan tipe data sesuai dengan model Laravel kamu
+interface Experience {
+    id: number;
+    company: string;
+    position: string;
+    start_date: string;
+    end_date: string | null;
+    is_current: boolean;
+    description: string;
+}
 
-export default function ExperienceSection() {
+// 2. Terima props 'experiences' dari parent (Welcome.tsx)
+interface ExpertiseProps {
+    experiences: Experience[];
+}
+
+export default function Expertise({ experiences }: ExpertiseProps) {
     return (
         <section className="bg-primary px-8 py-20 text-black md:px-16 lg:px-24">
             {/* --- Header --- */}
@@ -40,16 +32,33 @@ export default function ExperienceSection() {
 
             {/* --- List Experience --- */}
             <div className="flex flex-col">
-                {experiences.map((exp) => (
-                    <ExperienceItem key={exp.id} data={exp} />
-                ))}
+                {/* 3. Gunakan data dari props, berikan fallback jika kosong */}
+                {experiences && experiences.length > 0 ? (
+                    experiences.map((exp) => (
+                        <ExperienceItem key={exp.id} data={exp} />
+                    ))
+                ) : (
+                    <p className="py-10 font-mono text-gray-400 italic">
+                        No experiences recorded yet.
+                    </p>
+                )}
             </div>
         </section>
     );
 }
 
-function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
+// 4. Pastikan parameter data menggunakan interface Experience
+function ExperienceItem({ data }: { data: Experience }) {
     const [isOpen, setIsOpen] = useState(false);
+
+    const formatDate = (dateStr: string | null) => {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric',
+        });
+    };
 
     return (
         <motion.div
@@ -62,15 +71,15 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
             {/* 1. Kolom Waktu */}
             <div className="mb-4 w-full md:mb-0 md:w-1/4">
                 <p className="font-mono text-sm tracking-tighter text-gray-400 uppercase md:text-base">
-                    {data.start_date} —{' '}
-                    {data.is_current ? 'Present' : data.end_date}
+                    {formatDate(data.start_date)} —{' '}
+                    {data.is_current ? 'Present' : formatDate(data.end_date)}
                 </p>
             </div>
 
             {/* 2. Kolom Utama */}
             <div className="flex flex-1 flex-col">
                 <div className="flex items-baseline gap-4">
-                    <h3 className="font-heading text-3xl font-medium md:text-5xl lg:text-6xl">
+                    <h3 className="font-heading text-3xl font-medium uppercase md:text-5xl lg:text-6xl">
                         {data.position}
                     </h3>
                 </div>
@@ -93,14 +102,14 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
                 </motion.div>
             </div>
 
-            {/* 4. Arrow Indicator - SEKARANG TERSEMBUNYI DI MOBILE */}
+            {/* 4. Arrow Indicator */}
             <div className="relative ml-10 hidden md:flex">
                 <motion.div
                     variants={{
                         initial: {
                             rotate: 0,
                             scale: 1,
-                            backgroundColor: 'rgba(0,0,0,0)', // Gunakan rgba transparan
+                            backgroundColor: 'rgba(0,0,0,0)',
                             color: '#000',
                         },
                         hover: {
@@ -110,7 +119,6 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
                             color: '#fff',
                         },
                     }}
-                    // Hapus 'transition-colors' agar tidak bentrok dengan Framer Motion
                     className="flex h-16 w-16 items-center justify-center rounded-full border border-black/10"
                 >
                     <span className="text-2xl">→</span>
