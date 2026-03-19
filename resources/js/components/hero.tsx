@@ -37,7 +37,7 @@ export default function Hero() {
     const scrollBtnY = rawScrollBtnY;
 
     // Daftar kata yang akan berganti di baris terakhir
-    const words = ['Creation', 'Innovation', 'Solution', 'Experience'];
+    const words = ['Creation', 'Vision', 'Solution', 'Perfection'];
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [displayedText, setDisplayedText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
