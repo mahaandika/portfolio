@@ -59,7 +59,7 @@ export default function Hero() {
 
             {/* --- SISI KIRI: Headline & Paragraf --- */}
             <div className="z-10 mt-15 flex flex-col items-center text-center md:mt-0 md:w-1/3 md:items-start md:text-left">
-                <motion.h1 className="font-heading text-2xl leading-[1.1] text-secondary sm:text-4xl md:text-6xl lg:text-8xl">
+                <motion.h1 className="font-heading text-xl leading-[1.1] text-secondary sm:text-4xl md:text-6xl lg:text-8xl">
                     {/* 1. Baris Statis (Turn, Concept, Into) */}
                     {staticLines.map((line, idx) => (
                         <React.Fragment key={idx}>
@@ -173,7 +173,7 @@ export default function Hero() {
                     whileTap={{ scale: 0.95 }}
                     className="rounded-xl bg-secondary px-8 py-4 font-body text-lg font-semibold text-primary transition-all hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]"
                 >
-                    Get in Touch
+                    My Creative Journey
                 </motion.button>
             </div>
         </section>
