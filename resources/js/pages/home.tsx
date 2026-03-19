@@ -1,3 +1,4 @@
+import About from '@/components/about';
 import Hero from '@/components/hero';
 import { Head, Link } from '@inertiajs/react';
 import { Briefcase, Code2, Folder } from 'lucide-react';
@@ -12,7 +13,7 @@ export default function Welcome({ categories, experiences, projects }: Props) {
     return (
         <div>
             <Hero />
-            {/* <div className="h-96"></div> */}
+            <About />
         </div>
     );
 }
