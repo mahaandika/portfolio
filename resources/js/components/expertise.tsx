@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useState } from 'react';
 
 // Simulasi data dari Database/Model Laravel
 const experiences = [
@@ -29,12 +29,12 @@ export default function ExperienceSection() {
     return (
         <section className="bg-primary px-8 py-20 text-black md:px-16 lg:px-24">
             {/* --- Header --- */}
-            <div className="mb-16 border-b border-black/10 pb-8">
-                <span className="mb-4 block font-mono text-sm tracking-widest text-gray-500 uppercase">
-                    // Professional Experience
+            <div className="border-b border-black/10 pb-8 md:mb-10">
+                <span className="mb-4 block font-body text-sm tracking-widest text-gray-500 uppercase">
+                    // Experience
                 </span>
                 <h2 className="font-heading text-5xl leading-tight font-bold md:text-7xl">
-                    MY JOURNEY
+                    MY JOURNEY OF CREATION
                 </h2>
             </div>
 
@@ -49,13 +49,17 @@ export default function ExperienceSection() {
 }
 
 function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <motion.div
             initial="initial"
+            animate={isOpen ? 'hover' : 'initial'}
             whileHover="hover"
-            className="group relative flex flex-col border-b border-black/10 py-12 transition-colors hover:bg-black/[0.01] md:flex-row md:items-start"
+            onClick={() => setIsOpen(!isOpen)}
+            className="group relative flex cursor-pointer flex-col border-b border-black/10 py-12 transition-colors hover:bg-black/[0.01] md:flex-row md:items-start"
         >
-            {/* 1. Kolom Waktu (Start - End) */}
+            {/* 1. Kolom Waktu */}
             <div className="mb-4 w-full md:mb-0 md:w-1/4">
                 <p className="font-mono text-sm tracking-tighter text-gray-400 uppercase md:text-base">
                     {data.start_date} —{' '}
@@ -63,7 +67,7 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
                 </p>
             </div>
 
-            {/* 2. Kolom Utama (Position & Company) */}
+            {/* 2. Kolom Utama */}
             <div className="flex flex-1 flex-col">
                 <div className="flex items-baseline gap-4">
                     <h3 className="font-heading text-3xl font-medium md:text-5xl lg:text-6xl">
@@ -74,7 +78,7 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
                     at <span className="text-black italic">{data.company}</span>
                 </p>
 
-                {/* 3. Deskripsi (Reveal on Hover) */}
+                {/* 3. Deskripsi */}
                 <motion.div
                     variants={{
                         initial: { height: 0, opacity: 0, marginTop: 0 },
@@ -89,14 +93,14 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
                 </motion.div>
             </div>
 
-            {/* 4. Arrow Indicator */}
-            <div className="absolute top-12 right-0 md:relative md:top-0">
+            {/* 4. Arrow Indicator - SEKARANG TERSEMBUNYI DI MOBILE */}
+            <div className="relative ml-10 hidden md:flex">
                 <motion.div
                     variants={{
                         initial: {
                             rotate: 0,
                             scale: 1,
-                            backgroundColor: 'transparent',
+                            backgroundColor: 'rgba(0,0,0,0)', // Gunakan rgba transparan
                             color: '#000',
                         },
                         hover: {
@@ -106,7 +110,8 @@ function ExperienceItem({ data }: { data: (typeof experiences)[0] }) {
                             color: '#fff',
                         },
                     }}
-                    className="flex h-12 w-12 items-center justify-center rounded-full border border-black/10 transition-colors md:h-16 md:w-16"
+                    // Hapus 'transition-colors' agar tidak bentrok dengan Framer Motion
+                    className="flex h-16 w-16 items-center justify-center rounded-full border border-black/10"
                 >
                     <span className="text-2xl">→</span>
                 </motion.div>
