@@ -103,6 +103,16 @@ export default function Hero() {
 
     const staticLines = ['Turn', 'Concept', 'Into'];
 
+    const handleCV = () => {
+        const link = document.createElement('a');
+        link.href = '/docs/CV_agungAndika.pdf';
+        link.target = '_blank';
+        // link.download = 'CV_Agung_Andika.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <section className="relative flex h-screen min-h-[600px] flex-col justify-between overflow-hidden bg-primary p-6 md:flex-row md:items-center md:p-12">
             {/* --- Logo Header (Agung Andika) --- */}
@@ -205,9 +215,10 @@ export default function Hero() {
                 </motion.div>
                 {/* Tombol Explore HANYA muncul di Mobile (dibawah MD) */}
                 <motion.button
+                    onClick={handleCV}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="mt-5 rounded-xl bg-secondary px-6 py-3 font-body text-sm font-semibold text-primary shadow-lg md:hidden"
+                    className="mt-5 cursor-pointer rounded-xl bg-secondary px-6 py-3 font-body text-sm font-semibold text-primary shadow-lg md:hidden"
                 >
                     My Creative Journey
                 </motion.button>
@@ -268,9 +279,10 @@ export default function Hero() {
                 </motion.p>
 
                 <motion.button
+                    onClick={handleCV}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="rounded-xl bg-secondary px-8 py-4 font-body text-lg font-semibold text-primary transition-all hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] md:text-sm lg:text-base"
+                    className="cursor-pointer rounded-xl bg-secondary px-8 py-4 font-body text-lg font-semibold text-primary transition-all hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] md:text-sm lg:text-base"
                 >
                     My Creative Journey
                 </motion.button>
