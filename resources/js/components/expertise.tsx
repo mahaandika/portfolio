@@ -1,7 +1,6 @@
-import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import React, { useState, useRef } from 'react';
 
-// 1. Definisikan tipe data sesuai dengan model Laravel kamu
 interface Experience {
     id: number;
     company: string;
@@ -12,7 +11,6 @@ interface Experience {
     description: string;
 }
 
-// 2. Terima props 'experiences' dari parent (Welcome.tsx)
 interface ExpertiseProps {
     experiences: Experience[];
 }
@@ -20,7 +18,6 @@ interface ExpertiseProps {
 export default function Expertise({ experiences }: ExpertiseProps) {
     return (
         <section className="bg-primary px-8 py-20 text-black md:px-16 lg:px-24">
-            {/* --- Header --- */}
             <div className="border-b border-black/10 pb-8 md:mb-10">
                 <span className="mb-4 block font-body text-sm tracking-widest text-gray-500 uppercase">
                     // Experience
@@ -30,9 +27,7 @@ export default function Expertise({ experiences }: ExpertiseProps) {
                 </h2>
             </div>
 
-            {/* --- List Experience --- */}
             <div className="flex flex-col">
-                {/* 3. Gunakan data dari props, berikan fallback jika kosong */}
                 {experiences && experiences.length > 0 ? (
                     experiences.map((exp) => (
                         <ExperienceItem key={exp.id} data={exp} />
@@ -47,9 +42,40 @@ export default function Expertise({ experiences }: ExpertiseProps) {
     );
 }
 
-// 4. Pastikan parameter data menggunakan interface Experience
 function ExperienceItem({ data }: { data: Experience }) {
     const [isOpen, setIsOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // 1. Setup Scroll Progress untuk item spesifik ini
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start end', 'end start'], // Mulai animasi saat bagian atas elemen menyentuh bawah layar
+    });
+
+    // 2. Buat Spring Config agar gerakan terasa "berat" dan halus
+    const springConfig = { stiffness: 300, damping: 30, restDelta: 0.001 };
+
+    // 3. Transformasi Scroll ke Nilai Animasi
+    const opacityRaw = useTransform(
+        scrollYProgress,
+        [0, 0.2, 0.8, 1],
+        [0, 1, 1, 0],
+    );
+    const scaleRaw = useTransform(
+        scrollYProgress,
+        [0, 0.2, 0.8, 1],
+        [0.9, 1, 1, 0.9],
+    );
+    const yRaw = useTransform(
+        scrollYProgress,
+        [0, 0.2, 0.8, 1],
+        [50, 0, 0, -50],
+    );
+
+    // 4. Bungkus dengan Spring untuk efek kelembaman
+    const opacity = useSpring(opacityRaw, springConfig);
+    const scale = useSpring(scaleRaw, springConfig);
+    const y = useSpring(yRaw, springConfig);
 
     const formatDate = (dateStr: string | null) => {
         if (!dateStr) return '';
@@ -62,13 +88,14 @@ function ExperienceItem({ data }: { data: Experience }) {
 
     return (
         <motion.div
+            ref={containerRef}
+            style={{ opacity, scale, y }} // Terapkan animasi scroll spring
             initial="initial"
             animate={isOpen ? 'hover' : 'initial'}
             whileHover="hover"
             onClick={() => setIsOpen(!isOpen)}
             className="group relative flex cursor-pointer flex-col border-b border-black/10 py-12 transition-colors hover:bg-black/[0.01] md:flex-row md:items-start"
         >
-            {/* 1. Kolom Waktu */}
             <div className="mb-4 w-full md:mb-0 md:w-1/4">
                 <p className="font-mono text-sm tracking-tighter text-gray-400 uppercase md:text-base">
                     {formatDate(data.start_date)} —{' '}
@@ -76,7 +103,6 @@ function ExperienceItem({ data }: { data: Experience }) {
                 </p>
             </div>
 
-            {/* 2. Kolom Utama */}
             <div className="flex flex-1 flex-col">
                 <div className="flex items-baseline gap-4">
                     <h3 className="font-heading text-3xl font-medium uppercase md:text-5xl lg:text-5xl">
@@ -87,7 +113,6 @@ function ExperienceItem({ data }: { data: Experience }) {
                     at <span className="text-black italic">{data.company}</span>
                 </p>
 
-                {/* 3. Deskripsi */}
                 <motion.div
                     variants={{
                         initial: { height: 0, opacity: 0, marginTop: 0 },
@@ -102,7 +127,6 @@ function ExperienceItem({ data }: { data: Experience }) {
                 </motion.div>
             </div>
 
-            {/* 4. Arrow Indicator */}
             <div className="relative ml-10 hidden md:flex">
                 <motion.div
                     variants={{
