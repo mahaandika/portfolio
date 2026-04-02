@@ -9,6 +9,7 @@ interface Project {
     category?: { name: string };
     thumbnail?: string;
     slug: string;
+    tech_stack: string[] | null;
 }
 
 interface ProjectsProps {
@@ -19,7 +20,7 @@ export default function Projects({ projects }: ProjectsProps) {
     return (
         <section className="bg-secondary text-white">
             {/* --- Header --- */}
-            <div className="px-8 py-24 text-center md:px-16 lg:px-24">
+            <div className="px-8 py-14 text-center md:px-16 lg:px-24 lg:py-24">
                 <span className="mb-4 block font-body text-sm tracking-widest text-gray-400 uppercase">
                     // Projects
                 </span>
@@ -41,7 +42,7 @@ export default function Projects({ projects }: ProjectsProps) {
             </div>
 
             {/* --- Footer Button --- */}
-            <div className="relative z-30 bg-secondary py-24 text-center">
+            <div className="relative z-30 bg-secondary py-14 text-center">
                 <Link
                     href="/projects"
                     className="inline-block rounded-full bg-white px-10 py-4 font-heading text-sm font-bold text-black transition-transform hover:scale-105 active:scale-95"
@@ -98,20 +99,88 @@ function ProjectItem({
 
                 {/* 2. Text Content */}
                 <div className="flex w-full flex-col md:w-1/2">
-                    <h3 className="font-heading text-4xl font-bold md:text-5xl lg:text-6xl">
+                    <h3 className="font-heading text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
                         {project.title}
                     </h3>
-                    <p className="mt-6 max-w-xl font-body text-lg leading-relaxed text-gray-400">
-                        {project.description}
-                    </p>
 
                     <div className="mt-8 flex flex-wrap gap-3">
-                        <span className="rounded-full border border-white/20 px-4 py-1 font-mono text-xs tracking-widest text-white uppercase transition-colors hover:bg-white hover:text-black">
-                            {project.category?.name || 'Development'}
+                        <span className="rounded-full border border-white/20 px-4 py-1 font-mono text-[10px] tracking-widest text-gray-400 uppercase">
+                            // {project.category?.name || 'Development'}
                         </span>
-                        <span className="rounded-full border border-white/20 px-4 py-1 font-mono text-xs tracking-widest text-white uppercase">
-                            UI/UX
-                        </span>
+
+                        <div className="flex flex-wrap gap-3">
+                            {Array.isArray(project.tech_stack) ? (
+                                project.tech_stack.map((tech, i) => (
+                                    <span
+                                        key={i}
+                                        className="rounded-full border border-white/20 px-4 py-1 font-mono text-[10px] tracking-widest text-white uppercase transition-colors hover:bg-white hover:text-black"
+                                    >
+                                        {tech}
+                                    </span>
+                                ))
+                            ) : (
+                                <span className="rounded-full border border-white/20 px-4 py-1 font-mono text-[10px] tracking-widest text-white uppercase">
+                                    {project.tech_stack}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="w-full max-w-xl">
+                        <p className="mt-6 line-clamp-4 text-left font-body text-lg leading-relaxed text-gray-400">
+                            {project.description}
+                        </p>
+
+                        {/* See Detail & Garis Berdampingan (Hanya Bagian Ini Yang Berubah Posisi) */}
+                        <div
+                            className={`mt-10 flex items-center gap-6 ${isEven ? 'flex-row' : 'md:flex-row-reverse'}`}
+                        >
+                            <Link
+                                href={`/projects/${project.slug}`}
+                                className="group/link flex shrink-0 items-center gap-3 font-heading text-xs font-bold tracking-[0.4em] text-white uppercase transition-colors"
+                            >
+                                See Detail
+                                {/* Animasi Arrow Putih */}
+                                <motion.span
+                                    initial={{ x: -5, opacity: 0 }}
+                                    whileInView={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.5 }}
+                                    className="inline-block"
+                                >
+                                    <svg
+                                        width="24"
+                                        height="12"
+                                        viewBox="0 0 24 12"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="transition-transform duration-500 group-hover/link:translate-x-2"
+                                    >
+                                        <path
+                                            d="M1 6H23M23 6L18 1M23 6L18 11"
+                                            stroke="white"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="transition-colors"
+                                        />
+                                    </svg>
+                                </motion.span>
+                            </Link>
+
+                            {/* Garis Horizontal */}
+                            <div className="relative h-px grow overflow-hidden bg-white/20">
+                                <motion.div
+                                    initial={{ scaleX: 0 }}
+                                    whileInView={{ scaleX: 1 }}
+                                    transition={{
+                                        duration: 1.5,
+                                        ease: [0.22, 1, 0.36, 1],
+                                    }}
+                                    style={{ originX: isEven ? 0 : 1 }}
+                                    className="absolute inset-0 bg-white"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </motion.div>
