@@ -102,6 +102,25 @@ const Edit = ({ project, categories }: Props) => {
         });
     };
 
+    const [techInput, setTechInput] = useState('');
+
+    const addTech = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && techInput.trim() !== '') {
+            e.preventDefault();
+            if (!data.tech_stack.includes(techInput.trim())) {
+                setData('tech_stack', [...data.tech_stack, techInput.trim()]);
+            }
+            setTechInput('');
+        }
+    };
+
+    const removeTech = (index: number) => {
+        setData(
+            'tech_stack',
+            data.tech_stack.filter((_, i) => i !== index),
+        );
+    };
+
     return (
         <AppLayout>
             <Head title={`Edit Project - ${project.title}`} />
@@ -174,6 +193,59 @@ const Edit = ({ project, categories }: Props) => {
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Tech Stack (Press Enter to add)
+                                    </label>
+                                    <div className="mb-2 flex flex-wrap gap-2">
+                                        {data.tech_stack.map((tech, i) => (
+                                            <span
+                                                key={i}
+                                                className="flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm font-medium"
+                                            >
+                                                {tech}
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        removeTech(i)
+                                                    }
+                                                >
+                                                    <X className="h-3 w-3 hover:text-red-500" />
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
+                                        placeholder="Type and press Enter..."
+                                        value={techInput}
+                                        onChange={(e) =>
+                                            setTechInput(e.target.value)
+                                        }
+                                        onKeyDown={addTech}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Live URL
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
+                                        value={data.url_link}
+                                        onChange={(e) =>
+                                            setData('url_link', e.target.value)
+                                        }
+                                    />
+                                    {errors.url_link && (
+                                        <p className="mt-1 text-xs text-red-500">
+                                            {errors.url_link}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
