@@ -1,5 +1,6 @@
 import About from '@/components/about';
 import Expertise from '@/components/expertise';
+import Footer from '@/components/footer';
 import Hero from '@/components/hero';
 import Projects from '@/components/projects';
 import { Head, Link } from '@inertiajs/react';
@@ -18,6 +19,7 @@ export default function Welcome({ categories, experiences, projects }: Props) {
             <About />
             <Expertise experiences={experiences} />
             <Projects projects={projects} />
+            <Footer />
         </div>
     );
 }
