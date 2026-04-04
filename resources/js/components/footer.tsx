@@ -17,14 +17,33 @@ export default function Footer() {
             <div className="mx-auto max-w-7xl">
                 {/* --- Top Social Pills --- */}
                 <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
-                    {['DRIBBBLE', 'INSTAGRAM', 'LINKEDIN'].map((item) => (
-                        <a
+                    {['BEHANCE', 'INSTAGRAM', 'LINKEDIN'].map((item) => (
+                        <motion.a
                             key={item}
                             href="#"
-                            className="flex items-center justify-center rounded-full border border-secondary/30 px-4 py-4 font-heading text-[10px] font-bold tracking-widest transition-all last:col-span-2 hover:bg-secondary hover:text-primary sm:text-xs md:text-base lg:py-6 lg:last:col-span-1"
+                            /* Menambahkan framer-motion pada tag 'a' untuk animasi hover yang lebih smooth */
+                            whileHover={{
+                                y: -8, // Mengangkat tombol ke atas
+                                scale: 1.02,
+                                transition: { duration: 0.1, ease: 'easeOut' },
+                            }}
+                            className="/* Shadow dibuat lebih dalam saat idle */ /* HOVER: Fokus pada bayangan (Shadow) bukan warna */ ,inset_0_2px_10px_rgba(255,255,255,0.5)] flex items-center justify-center rounded-full border-[0.5px] border-white/30 bg-gradient-to-b from-secondary via-secondary/80 to-secondary/40 px-4 py-4 font-heading text-[10px] font-bold tracking-[0.4em] text-primary shadow-[inset_0_2px_4px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.3),0_10px_20px_rgba(0,0,0,0.4)] transition-all duration-500 ease-in-out last:col-span-2 sm:text-xs md:text-base lg:py-6 lg:last:col-span-1"
                         >
-                            {item}
-                        </a>
+                            <span className="relative flex h-full w-full items-center justify-center overflow-hidden">
+                                {item}
+
+                                {/* Efek Kilatan Cahaya yang berjalan otomatis atau saat hover */}
+                                <motion.div
+                                    initial={{ x: '-150%', skewX: -45 }}
+                                    whileHover={{ x: '200%' }}
+                                    transition={{
+                                        duration: 1,
+                                        ease: 'easeInOut',
+                                    }}
+                                    className="pointer-events-none absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent blur-md"
+                                />
+                            </span>
+                        </motion.a>
                     ))}
                 </div>
 
