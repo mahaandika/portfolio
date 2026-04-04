@@ -5,10 +5,8 @@ export default function Footer() {
     const socialLinks = [
         { name: 'INSTAGRAM', href: '#' },
         { name: 'LINKEDIN', href: '#' },
-        { name: 'DRIBBBLE', href: '#' },
-        { name: 'MEDIUM', href: '#' },
-        { name: 'FIGMA COMMUNITY', href: '#' },
-        { name: 'TDTHINKER', href: '#' },
+        { name: 'WHATSAPP', href: '#' },
+        { name: 'BEHANCE', href: '#' },
     ];
 
     return (
@@ -60,9 +58,10 @@ export default function Footer() {
                     </motion.h2>
 
                     <p className="mx-auto mt-8 max-w-2xl font-body text-sm font-medium tracking-widest text-secondary/70 uppercase md:text-base lg:text-lg">
-                        I AM AVAILABLE FOR A FREELANCE PROJECT THIS YEAR.
+                        I AM AVAILABLE FOR A PROJECT THIS YEAR.
                         <span className="block">
-                            LOOKING FOR A UI DESIGNER? JUST GET IN TOUCH.
+                            LOOKING FOR A GRAPHIC DESIGNER OR WEB DEVELOPER?
+                            JUST GET IN TOUCH.
                         </span>
                     </p>
 
@@ -79,7 +78,7 @@ export default function Footer() {
 
                 {/* --- Bottom Links Area --- */}
                 <div className="mt-32 border-t border-secondary/20 pt-12">
-                    <p className="mb-8 text-center font-body text-[10px] tracking-[0.3em] text-secondary/50 uppercase">
+                    <p className="mb-8 text-center font-body text-[10px] tracking-[0.3em] text-secondary/80 uppercase">
                         Follow all my accounts:
                     </p>
 
@@ -97,8 +96,8 @@ export default function Footer() {
                 </div>
 
                 {/* --- Copyright Area --- */}
-                <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-secondary/10 pt-8 text-[10px] tracking-widest text-secondary/40 md:flex-row">
-                    <p>© 2026 YOURPORTFOLIO. ALL RIGHTS RESERVED.</p>
+                <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-secondary/10 pt-8 text-[10px] tracking-widest text-secondary/80 md:flex-row">
+                    <p>© 2026 AGUNG ANDIKA. ALL RIGHTS RESERVED.</p>
                     <p className="font-medium">BALI, INDONESIA</p>
                 </div>
             </div>
