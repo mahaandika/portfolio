@@ -3,10 +3,22 @@ import { motion } from 'framer-motion';
 
 export default function Footer() {
     const socialLinks = [
-        { name: 'INSTAGRAM', href: '#' },
-        { name: 'LINKEDIN', href: '#' },
-        { name: 'WHATSAPP', href: '#' },
-        { name: 'BEHANCE', href: '#' },
+        { name: 'INSTAGRAM', href: 'https://www.instagram.com/mahaandika_/' },
+        {
+            name: 'LINKEDIN',
+            href: 'https://www.linkedin.com/in/i-gusti-agung-andika/',
+        },
+        {
+            name: 'WHATSAPP',
+            href: 'https://wa.me/6282340506408?text=Hi!%20I%20just%20checked%20your%20portfolio%20and%20I%27m%20really%20interested%20in%20working%20with%20you.%20Let%20me%20know%20if%20you%27re%20available.%20Thanks!',
+        },
+        { name: 'BEHANCE', href: 'https://www.behance.net/13gungandika/' },
+    ];
+
+    const capsuleLinks = [
+        socialLinks[1], // Instagram
+        socialLinks[0], // LinkedIn
+        socialLinks[3], // Behance
     ];
 
     return (
@@ -15,10 +27,11 @@ export default function Footer() {
             <div className="mx-auto max-w-7xl">
                 {/* --- Top Social Pills --- */}
                 <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
-                    {['BEHANCE', 'INSTAGRAM', 'LINKEDIN'].map((item) => (
+                    {capsuleLinks.map((item) => (
                         <motion.a
-                            key={item}
-                            href="#"
+                            key={item.name}
+                            href={item.href}
+                            target="_blank"
                             /* Menambahkan framer-motion pada tag 'a' untuk animasi hover yang lebih smooth */
                             whileHover={{
                                 y: -8, // Mengangkat tombol ke atas
@@ -28,7 +41,7 @@ export default function Footer() {
                             className="/* Shadow dibuat lebih dalam saat idle */ /* HOVER: Fokus pada bayangan (Shadow) bukan warna */ ,inset_0_2px_10px_rgba(255,255,255,0.5)] flex items-center justify-center rounded-full border-[0.5px] border-white/30 bg-gradient-to-b from-secondary via-secondary/80 to-secondary/40 px-4 py-4 font-heading text-[10px] font-bold tracking-[0.4em] text-primary shadow-[inset_0_2px_4px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.3),0_10px_20px_rgba(0,0,0,0.4)] transition-all duration-500 ease-in-out last:col-span-2 sm:text-xs md:text-base lg:py-6 lg:last:col-span-1"
                         >
                             <span className="relative flex h-full w-full items-center justify-center overflow-hidden">
-                                {item}
+                                {item.name}
 
                                 {/* Efek Kilatan Cahaya yang berjalan otomatis atau saat hover */}
                                 <motion.div
@@ -58,7 +71,7 @@ export default function Footer() {
                     </motion.h2>
 
                     <p className="mx-auto mt-8 max-w-2xl font-body text-sm font-medium tracking-widest text-secondary/70 uppercase md:text-base lg:text-lg">
-                        I AM AVAILABLE FOR A PROJECT THIS YEAR.
+                        I AM AVAILABLE FOR A PROJECT.
                         <span className="block">
                             LOOKING FOR A GRAPHIC DESIGNER OR WEB DEVELOPER?
                             JUST GET IN TOUCH.
@@ -67,7 +80,8 @@ export default function Footer() {
 
                     <div className="mt-12">
                         <a
-                            href="mailto:your@email.com"
+                            href="https://wa.me/6282340506408?text=Hi!%20I%20just%20checked%20your%20portfolio%20and%20I%27m%20really%20interested%20in%20working%20with%20you.%20Let%20me%20know%20if%20you%27re%20available.%20Thanks!"
+                            target="_blank"
                             /* Tombol menggunakan warna secondary sebagai background, teksnya warna primary */
                             className="inline-block rounded-full bg-secondary px-10 py-4 font-heading text-sm font-bold text-primary transition-all hover:scale-105 hover:shadow-2xl active:scale-95 md:px-12 md:py-5 md:text-base"
                         >
@@ -87,6 +101,7 @@ export default function Footer() {
                             <a
                                 key={link.name}
                                 href={link.href}
+                                target="_blank"
                                 className="font-body text-xs font-bold tracking-widest text-secondary/60 transition-colors hover:text-secondary"
                             >
                                 {link.name}
