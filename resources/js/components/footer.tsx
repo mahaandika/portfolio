@@ -16,13 +16,12 @@ export default function Footer() {
         <footer className="bg-primary px-6 py-20 text-secondary md:px-16 lg:px-24">
             <div className="mx-auto max-w-7xl">
                 {/* --- Top Social Pills --- */}
-                <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+                <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
                     {['DRIBBBLE', 'INSTAGRAM', 'LINKEDIN'].map((item) => (
                         <a
                             key={item}
                             href="#"
-                            /* Border menggunakan warna secondary dengan opasitas */
-                            className="rounded-full border border-secondary/30 px-8 py-3 font-heading text-sm font-bold tracking-widest transition-all hover:bg-secondary hover:text-primary md:text-base"
+                            className="flex items-center justify-center rounded-full border border-secondary/30 px-4 py-4 font-heading text-[10px] font-bold tracking-widest transition-all last:col-span-2 hover:bg-secondary hover:text-primary sm:text-xs md:text-base lg:py-6 lg:last:col-span-1"
                         >
                             {item}
                         </a>
