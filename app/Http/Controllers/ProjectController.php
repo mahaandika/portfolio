@@ -191,4 +191,11 @@ class ProjectController extends Controller
             return back()->with('error', 'Gagal menghapus project: ' . $e->getMessage());
         }
     }
+
+    public function projectsClient(){
+        return Inertia::render('projects', [
+            'categories'  => Category::all(),
+            'projects'    => Project::with(['category', 'images'])->latest()->get(),
+        ]);
+    }
 }
