@@ -13,6 +13,7 @@ use Laravel\Fortify\Features;
 // ])->name('home');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/projects', [ProjectController::class, 'projectsClient'])->name('projects');
 
 // Grup Route yang Memerlukan Login
 Route::middleware(['auth', 'verified'])->group(function () {
