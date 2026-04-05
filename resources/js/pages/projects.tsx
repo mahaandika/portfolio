@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Footer from '@/components/footer';
 
 export default function ProjectsPage() {
     const [filter, setFilter] = useState('All');
+    const name = 'Agung Andika';
 
     const categories = [
         'All',
@@ -33,6 +35,61 @@ export default function ProjectsPage() {
         // Tambahkan project lainnya di sini
     ];
 
+    const containerVariants = {
+        initial: { y: 0 },
+        hover: { y: 0 },
+    };
+
+    const letterVariants = {
+        // --- Animasi Saat Pertama Kali Muncul ---
+        initial: {
+            y: 20,
+            opacity: 0,
+        },
+        animate: (i: any) => ({
+            y: 0,
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+                delay: i * 0.05, // Efek muncul satu per satu
+                ease: 'easeOut',
+            },
+        }),
+        // --- Animasi Saat Hover ---
+        hover: (i: any) => ({
+            y: -8,
+            transition: {
+                duration: 0.3,
+                delay: i * 0.02, // Kecepatan gelombang saat hover lebih cepat
+                ease: 'easeOut',
+            },
+        }),
+    };
+
+    const sparkleVariants = {
+        initial: {
+            scale: 0,
+            opacity: 0,
+            rotate: -180,
+        },
+        animate: {
+            scale: 1,
+            opacity: 1,
+            rotate: 0,
+            transition: {
+                duration: 0.8,
+                delay: 0.5, // Muncul setelah teks mulai terlihat
+                type: 'spring',
+                stiffness: 200,
+            },
+        },
+        hover: {
+            rotate: 180,
+            scale: 1.2,
+            transition: { duration: 0.5 },
+        },
+    };
+
     const filteredProjects =
         filter === 'All'
             ? projects
@@ -40,9 +97,48 @@ export default function ProjectsPage() {
 
     return (
         <main className="min-h-screen bg-primary px-6 py-20 text-secondary md:px-16 lg:px-24">
+            <a href="/">
+                <motion.div
+                    variants={containerVariants}
+                    initial="initial"
+                    animate="animate"
+                    whileHover="hover"
+                    className="absolute top-6 left-1/2 z-50 flex -translate-x-1/2 cursor-default cursor-pointer items-center space-x-2 md:top-8 md:space-x-3"
+                >
+                    <motion.span
+                        variants={sparkleVariants}
+                        className="text-lg text-secondary md:text-xl"
+                    >
+                        ✦
+                    </motion.span>
+
+                    <h1 className="flex font-heading text-xl tracking-tight text-secondary md:text-3xl">
+                        {name.split('').map((char, i) => (
+                            <motion.span
+                                key={i}
+                                custom={i}
+                                variants={letterVariants}
+                                className="inline-block"
+                                style={{
+                                    whiteSpace: char === ' ' ? 'pre' : 'normal',
+                                }}
+                            >
+                                {char}
+                            </motion.span>
+                        ))}
+                    </h1>
+
+                    <motion.span
+                        variants={sparkleVariants}
+                        className="text-lg text-secondary md:text-xl"
+                    >
+                        ✦
+                    </motion.span>
+                </motion.div>
+            </a>
             <div className="mx-auto max-w-7xl">
                 {/* --- Header Section --- */}
-                <header className="mb-20 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+                <header className="mb-20 flex flex-col justify-between gap-8 lg:mt-5 lg:flex-row lg:items-end">
                     <div className="max-w-3xl">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
@@ -68,7 +164,7 @@ export default function ProjectsPage() {
                 </header>
 
                 {/* --- Filter System --- */}
-                <nav className="no-scrollbar mb-16 border-b border-secondary/10">
+                <nav className="no-scrollbar mb-16 overflow-x-auto border-b border-secondary/10">
                     <ul className="flex min-w-max gap-8 pb-4 md:gap-12">
                         {categories.map((cat) => (
                             <li key={cat}>
