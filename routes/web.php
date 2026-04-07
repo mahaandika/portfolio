@@ -14,6 +14,8 @@ use Laravel\Fortify\Features;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/projects', [ProjectController::class, 'projectsClient'])->name('projects');
+// Route untuk detail project
+Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
 // Grup Route yang Memerlukan Login
 Route::middleware(['auth', 'verified'])->group(function () {
