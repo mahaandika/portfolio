@@ -136,7 +136,7 @@ function ProjectItem({
                             className={`mt-10 flex items-center gap-6 ${isEven ? 'flex-row' : 'md:flex-row-reverse'}`}
                         >
                             <Link
-                                href={`/projects/${project.slug}`}
+                                href={`/projects/${project.id}`}
                                 className="group/link flex shrink-0 items-center gap-3 font-heading text-xs font-bold tracking-[0.4em] text-white uppercase transition-colors"
                             >
                                 See Detail
