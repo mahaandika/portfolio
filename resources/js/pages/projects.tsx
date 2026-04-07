@@ -159,14 +159,27 @@ export default function ProjectsPage({
                     {/* --- Projects Grid Dinamis --- */}
                     <div className="grid grid-cols-1 gap-x-10 gap-y-20 md:grid-cols-2">
                         <AnimatePresence mode="popLayout">
-                            {filteredProjects.map((project) => (
+                            {filteredProjects.map((project, index) => (
                                 <motion.article
                                     layout
                                     key={project.id}
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
+                                    // initial: Posisi awal sebelum terlihat
+                                    initial={{ opacity: 0, y: 30 }}
+                                    // whileInView: Animasi yang berjalan saat elemen masuk ke layar
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    // exit: Animasi saat elemen difilter keluar
                                     exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{ duration: 0.4 }}
+                                    // viewport: Mengatur kapan animasi dipicu
+                                    viewport={{
+                                        once: true, // Animasi hanya jalan sekali (tidak berulang saat scroll up/down)
+                                        margin: '-50px', // Mulai animasi 50px sebelum elemen benar-benar terlihat (terasa lebih natural)
+                                    }}
+                                    transition={{
+                                        duration: 0.6,
+                                        ease: 'easeOut',
+                                        // Opsional: berikan sedikit delay berdasarkan urutan jika ingin efek mengalir
+                                        delay: (index % 2) * 0.1,
+                                    }}
                                     className="group cursor-pointer"
                                 >
                                     <Link href={`/projects/${project.id}`}>
