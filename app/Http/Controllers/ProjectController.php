@@ -198,4 +198,23 @@ class ProjectController extends Controller
             'projects'    => Project::with(['category', 'images'])->latest()->get(),
         ]);
     }
+
+    public function show(Project $project)
+    {
+        // Muat relasi category (dan images jika ada)
+        $project->load('category', 'images');
+
+        return Inertia::render('projectDetails', [
+        'project' => [
+            'id' => $project->id,
+            'title' => $project->title,
+            'description' => $project->description,
+            'thumbnail' => $project->thumbnail,
+            'category' => $project->category,
+            // Mengambil tahun saja dari created_at
+            'year' => $project->created_at->format('Y'), 
+            'images' => $project->images,
+        ]
+    ]);
+    }
 }
