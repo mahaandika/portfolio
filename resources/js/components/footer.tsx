@@ -1,29 +1,53 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function Footer() {
+// Definisi tipe untuk Props
+interface FooterProps {
+    variant?: 'primary' | 'secondary';
+}
+
+export default function Footer({ variant = 'primary' }: FooterProps) {
+    // Logika penentuan warna berdasarkan variant
+    const isPrimary = variant === 'primary';
+
+    // 1. Background footer
+    const bgColor = isPrimary ? 'bg-primary' : 'bg-secondary';
+
+    // 2. Warna teks utama
+    const textColor = isPrimary ? 'text-secondary' : 'text-primary';
+
+    // 3. Warna border & opacity teks
+    const borderColor = isPrimary ? 'border-secondary/20' : 'border-primary/20';
+    const mutedTextColor = isPrimary ? 'text-secondary/70' : 'text-primary/70';
+    const copyrightColor = isPrimary ? 'text-secondary/80' : 'text-primary/80';
+
+    // 4. Skema warna tombol Pill & CTA
+    // Jika bg footer primary (hitam), pill-nya warna putih/secondary.
+    // Jika bg footer secondary (putih), pill-nya warna hitam/primary.
+    const pillBg = isPrimary
+        ? 'bg-gradient-to-b from-secondary via-secondary/80 to-secondary/40 text-primary'
+        : 'bg-gradient-to-b from-primary via-primary/80 to-primary/40 text-secondary';
+
+    const ctaBtn = isPrimary
+        ? 'bg-secondary text-primary'
+        : 'bg-primary text-secondary';
+
     const socialLinks = [
         { name: 'INSTAGRAM', href: 'https://www.instagram.com/mahaandika_/' },
         {
             name: 'LINKEDIN',
             href: 'https://www.linkedin.com/in/i-gusti-agung-andika/',
         },
-        {
-            name: 'WHATSAPP',
-            href: 'https://wa.me/6282340506408?text=Hi!%20I%20just%20checked%20your%20portfolio%20and%20I%27m%20really%20interested%20in%20working%20with%20you.%20Let%20me%20know%20if%20you%27re%20available.%20Thanks!',
-        },
+        { name: 'WHATSAPP', href: 'https://wa.me/6282340506408?text=Hi!...' },
         { name: 'BEHANCE', href: 'https://www.behance.net/13gungandika/' },
     ];
 
-    const capsuleLinks = [
-        socialLinks[1], // Instagram
-        socialLinks[0], // LinkedIn
-        socialLinks[3], // Behance
-    ];
+    const capsuleLinks = [socialLinks[1], socialLinks[0], socialLinks[3]];
 
     return (
-        /* Latar belakang menggunakan Primary, teks utama menggunakan Secondary */
-        <footer className="bg-primary px-6 py-20 text-secondary md:px-16 lg:px-24">
+        <footer
+            className={`${bgColor} ${textColor} px-6 py-20 transition-colors duration-500 md:px-16 lg:px-24`}
+        >
             <div className="mx-auto max-w-7xl">
                 {/* --- Top Social Pills --- */}
                 <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
@@ -32,18 +56,11 @@ export default function Footer() {
                             key={item.name}
                             href={item.href}
                             target="_blank"
-                            /* Menambahkan framer-motion pada tag 'a' untuk animasi hover yang lebih smooth */
-                            whileHover={{
-                                y: -8, // Mengangkat tombol ke atas
-                                scale: 1.02,
-                                transition: { duration: 0.1, ease: 'easeOut' },
-                            }}
-                            className="/* Shadow dibuat lebih dalam saat idle */ /* HOVER: Fokus pada bayangan (Shadow) bukan warna */ ,inset_0_2px_10px_rgba(255,255,255,0.5)] flex items-center justify-center rounded-full border-[0.5px] border-white/30 bg-gradient-to-b from-secondary via-secondary/80 to-secondary/40 px-4 py-4 font-heading text-[10px] font-bold tracking-[0.4em] text-primary shadow-[inset_0_2px_4px_rgba(255,255,255,0.4),inset_0_-2px_4px_rgba(0,0,0,0.3),0_10px_20px_rgba(0,0,0,0.4)] transition-all duration-500 ease-in-out last:col-span-2 sm:text-xs md:text-base lg:py-6 lg:last:col-span-1"
+                            whileHover={{ y: -8, scale: 1.02 }}
+                            className={`${pillBg} flex items-center justify-center rounded-full border-[0.5px] border-white/30 px-4 py-4 font-heading text-[10px] font-bold tracking-[0.4em] shadow-xl transition-all duration-500 last:col-span-2 sm:text-xs md:text-base lg:py-6 lg:last:col-span-1`}
                         >
-                            <span className="relative flex h-full w-full items-center justify-center overflow-hidden">
+                            <span className="relative flex h-full w-full items-center justify-center overflow-hidden uppercase">
                                 {item.name}
-
-                                {/* Efek Kilatan Cahaya yang berjalan otomatis atau saat hover */}
                                 <motion.div
                                     initial={{ x: '-150%', skewX: -45 }}
                                     whileHover={{ x: '200%' }}
@@ -64,13 +81,14 @@ export default function Footer() {
                         initial={{ y: 20, opacity: 0 }}
                         whileInView={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8 }}
-                        /* Text menggunakan Secondary */
-                        className="font-heading text-6xl leading-none font-black tracking-tighter text-secondary sm:text-8xl md:text-9xl lg:text-[12rem]"
+                        className="font-heading text-6xl leading-none font-black tracking-tighter sm:text-8xl md:text-9xl lg:text-[12rem]"
                     >
                         GET IN TOUCH
                     </motion.h2>
 
-                    <p className="mx-auto mt-8 max-w-2xl font-body text-sm font-medium tracking-widest text-secondary/70 uppercase md:text-base lg:text-lg">
+                    <p
+                        className={`mx-auto mt-8 max-w-2xl font-body text-sm font-medium tracking-widest uppercase md:text-base lg:text-lg ${mutedTextColor}`}
+                    >
                         I AM AVAILABLE FOR A PROJECT.
                         <span className="block">
                             LOOKING FOR A GRAPHIC DESIGNER OR WEB DEVELOPER?
@@ -80,10 +98,9 @@ export default function Footer() {
 
                     <div className="mt-12">
                         <a
-                            href="https://wa.me/6282340506408?text=Hi!%20I%20just%20checked%20your%20portfolio%20and%20I%27m%20really%20interested%20in%20working%20with%20you.%20Let%20me%20know%20if%20you%27re%20available.%20Thanks!"
+                            href="https://wa.me/6282340506408"
                             target="_blank"
-                            /* Tombol menggunakan warna secondary sebagai background, teksnya warna primary */
-                            className="inline-block rounded-full bg-secondary px-10 py-4 font-heading text-sm font-bold text-primary transition-all hover:scale-105 hover:shadow-2xl active:scale-95 md:px-12 md:py-5 md:text-base"
+                            className={`inline-block rounded-full ${ctaBtn} px-10 py-4 font-heading text-sm font-bold transition-all hover:scale-105 hover:shadow-2xl active:scale-95 md:px-12 md:py-5 md:text-base`}
                         >
                             Contact Me
                         </a>
@@ -91,8 +108,10 @@ export default function Footer() {
                 </div>
 
                 {/* --- Bottom Links Area --- */}
-                <div className="mt-32 border-t border-secondary/20 pt-12">
-                    <p className="mb-8 text-center font-body text-[10px] tracking-[0.3em] text-secondary/80 uppercase">
+                <div className={`mt-20 border-t ${borderColor} pt-12`}>
+                    <p
+                        className={`mb-8 text-center font-body text-[10px] tracking-[0.3em] uppercase ${copyrightColor}`}
+                    >
                         Follow all my accounts:
                     </p>
 
@@ -102,7 +121,7 @@ export default function Footer() {
                                 key={link.name}
                                 href={link.href}
                                 target="_blank"
-                                className="font-body text-xs font-bold tracking-widest text-secondary/60 transition-colors hover:text-secondary"
+                                className={`font-body text-xs font-bold tracking-widest opacity-60 transition-colors hover:opacity-100`}
                             >
                                 {link.name}
                             </a>
@@ -111,7 +130,9 @@ export default function Footer() {
                 </div>
 
                 {/* --- Copyright Area --- */}
-                <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-secondary/10 pt-8 text-[10px] tracking-widest text-secondary/80 md:flex-row">
+                <div
+                    className={`mt-20 flex flex-col items-center justify-between gap-4 border-t ${isPrimary ? 'border-secondary/10' : 'border-primary/10'} pt-8 text-[10px] tracking-widest ${copyrightColor} md:flex-row`}
+                >
                     <p>© 2026 AGUNG ANDIKA. ALL RIGHTS RESERVED.</p>
                     <p className="font-medium">BALI, INDONESIA</p>
                 </div>
