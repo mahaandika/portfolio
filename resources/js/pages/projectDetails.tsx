@@ -58,10 +58,15 @@ export default function ProjectShow({ project }: { project: any }) {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative mb-20 aspect-video overflow-hidden bg-secondary/5"
+                        className="relative mb-20 aspect-video cursor-pointer overflow-hidden bg-secondary/5"
                     >
                         <img
                             src={`/storage/${project.thumbnail}`}
+                            onClick={() =>
+                                setSelectedImage(
+                                    `/storage/${project.thumbnail}`,
+                                )
+                            }
                             alt={project.title}
                             className="h-full w-full object-cover"
                         />
@@ -128,38 +133,32 @@ export default function ProjectShow({ project }: { project: any }) {
                                                         setSelectedImage(
                                                             `/storage/${img.image_path}`,
                                                         )
-                                                    } // Set image saat diklik
-                                                    // Animasi masuk Staggered (satu per satu)
+                                                    }
+                                                    // Ganti ke whileInView agar animasi jalan saat di-scroll
                                                     initial={{
                                                         opacity: 0,
-                                                        y: 30,
+                                                        y: 20,
                                                     }}
                                                     whileInView={{
                                                         opacity: 1,
                                                         y: 0,
                                                     }}
+                                                    // Hapus scale agar tidak terlihat "blink"
                                                     transition={{
-                                                        duration: 0.7,
-                                                        delay: index * 0.1, // Jeda antar gambar
-                                                        ease: [
-                                                            0.215, 0.61, 0.355,
-                                                            1,
-                                                        ], // Power4.easeOut
+                                                        duration: 0.5, // Durasi lebih cepat agar terasa responsif
+                                                        delay: index * 0.1, // Stagger tipis agar elegan
+                                                        ease: 'easeOut',
                                                     }}
-                                                    viewport={{
-                                                        once: true,
-                                                        amount: 0.3,
-                                                    }} // Mulai animasi saat 30% gambar terlihat
+                                                    viewport={{ once: true }} // Animasi hanya jalan sekali saja
                                                     className="group relative aspect-square cursor-pointer overflow-hidden bg-secondary/5"
                                                 >
                                                     <img
-                                                        // Pastikan kolom path gambar di database Anda sesuai (misal: image_path)
                                                         src={`/storage/${img.image_path}`}
                                                         alt={`${project.title} detail image ${index + 1}`}
-                                                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                                     />
 
-                                                    {/* Overlay tipis saat hover agar lebih elegan */}
+                                                    {/* Overlay tipis saat hover */}
                                                     <div className="absolute inset-0 bg-primary/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                                                 </motion.div>
                                             ),
@@ -189,13 +188,17 @@ export default function ProjectShow({ project }: { project: any }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={() => setSelectedImage(null)} // Tutup saat klik di mana saja (overlay)
+                        // Klik pada overlay (area luar) akan menutup modal
+                        onClick={() => setSelectedImage(null)}
                         className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-primary/95 p-4 md:p-10"
                     >
                         {/* Tombol Close */}
                         <button
-                            className="absolute top-10 right-10 text-secondary transition-transform hover:scale-110"
-                            onClick={() => setSelectedImage(null)}
+                            className="absolute top-6 right-6 z-10 cursor-pointer text-secondary transition-transform hover:scale-110 md:top-10 md:right-10"
+                            onClick={(e) => {
+                                e.stopPropagation(); // Mencegah event merembet ke parent
+                                setSelectedImage(null);
+                            }}
                         >
                             <svg
                                 width="32"
@@ -203,7 +206,7 @@ export default function ProjectShow({ project }: { project: any }) {
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                strokeWidth="2"
+                                strokeWidth="2.5"
                             >
                                 <path d="M18 6L6 18M6 6l12 12" />
                             </svg>
@@ -219,7 +222,9 @@ export default function ProjectShow({ project }: { project: any }) {
                                 damping: 25,
                                 stiffness: 300,
                             }}
-                            className="max-h-full max-w-full object-contain shadow-2xl"
+                            // PENTING: e.stopPropagation() agar saat gambar diklik, modal TIDAK tertutup
+                            onClick={(e) => e.stopPropagation()}
+                            className="max-h-full max-w-full cursor-default object-contain shadow-2xl"
                             alt="Enlarged view"
                         />
                     </motion.div>
