@@ -111,8 +111,8 @@ export default function ProjectsPage({
                         transition={{ delay: 0.2 }}
                         className="max-w-sm font-body text-sm leading-relaxed text-secondary/70 md:text-base"
                     >
-                        From branding transformations to digital experiences,
-                        our work is a testament to innovation, strategy, and
+                        From branding transformations to digital experiences, my
+                        work reflects a balance of innovation, strategy, and
                         design excellence.
                     </motion.p>
                 </header>
@@ -196,24 +196,29 @@ export default function ProjectsPage({
                                             </div>
                                         </div>
                                     </div>
+                                    {/* Project Info */}
                                     <div className="flex items-start justify-between">
-                                        <div>
-                                            <h3 className="mb-1 font-heading text-2xl font-bold group-hover:underline md:text-3xl">
+                                        <div className="flex-1 pr-4">
+                                            {' '}
+                                            {/* Tambahkan flex-1 agar teks mengambil ruang yang tersedia */}
+                                            <h3 className="mb-3 font-heading text-2xl font-bold group-hover:underline md:text-3xl">
                                                 {project.title}
                                             </h3>
-                                            <p className="mb-4 font-medium text-secondary/50">
-                                                {project.category?.name ||
-                                                    'General Project'}
+                                            {/* --- Menampilkan Deskripsi dengan batasan --- */}
+                                            <p className="mb-4 line-clamp-3 font-body text-sm leading-relaxed text-secondary/60 md:text-base">
+                                                {project.description ||
+                                                    'No description available for this project.'}
                                             </p>
-
-                                            {/* 4. Menampilkan tag (jika ada data tags atau gunakan kategori) */}
+                                            {/* Tag Kategori */}
                                             <div className="flex flex-wrap gap-2">
                                                 <span className="border border-secondary/10 bg-secondary/5 px-3 py-1 text-[10px] font-bold tracking-widest uppercase">
                                                     {project.category?.name}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="text-secondary/20 transition-colors group-hover:text-secondary">
+
+                                        {/* Arrow Icon */}
+                                        <div className="flex-shrink-0 text-secondary/20 transition-colors group-hover:text-secondary">
                                             <svg
                                                 width="32"
                                                 height="32"
