@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Footer from '@/components/footer'; // Import footer yang baru kita buat
 
 export default function ProjectShow({ project }: { project: any }) {
+    // State untuk menyimpan URL gambar yang diklik
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     return (
         <main className="min-h-screen bg-primary text-secondary">
             <Head title={`${project.title} - Project Detail`} />
@@ -122,6 +124,11 @@ export default function ProjectShow({ project }: { project: any }) {
                                             (img: any, index: number) => (
                                                 <motion.div
                                                     key={img.id}
+                                                    onClick={() =>
+                                                        setSelectedImage(
+                                                            `/storage/${img.image_path}`,
+                                                        )
+                                                    } // Set image saat diklik
                                                     // Animasi masuk Staggered (satu per satu)
                                                     initial={{
                                                         opacity: 0,
@@ -133,7 +140,7 @@ export default function ProjectShow({ project }: { project: any }) {
                                                     }}
                                                     transition={{
                                                         duration: 0.7,
-                                                        delay: index * 0.15, // Jeda antar gambar
+                                                        delay: index * 0.1, // Jeda antar gambar
                                                         ease: [
                                                             0.215, 0.61, 0.355,
                                                             1,
@@ -143,7 +150,7 @@ export default function ProjectShow({ project }: { project: any }) {
                                                         once: true,
                                                         amount: 0.3,
                                                     }} // Mulai animasi saat 30% gambar terlihat
-                                                    className="group relative aspect-square overflow-hidden bg-secondary/5"
+                                                    className="group relative aspect-square cursor-pointer overflow-hidden bg-secondary/5"
                                                 >
                                                     <img
                                                         // Pastikan kolom path gambar di database Anda sesuai (misal: image_path)
@@ -174,6 +181,50 @@ export default function ProjectShow({ project }: { project: any }) {
 
             {/* Footer with Variant (Bisa pakai 'secondary' agar kontras) */}
             <Footer variant="secondary" />
+
+            {/* --- Lightbox / Modal --- */}
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSelectedImage(null)} // Tutup saat klik di mana saja (overlay)
+                        className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-primary/95 p-4 md:p-10"
+                    >
+                        {/* Tombol Close */}
+                        <button
+                            className="absolute top-10 right-10 text-secondary transition-transform hover:scale-110"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                            >
+                                <path d="M18 6L6 18M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <motion.img
+                            src={selectedImage}
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 25,
+                                stiffness: 300,
+                            }}
+                            className="max-h-full max-w-full object-contain shadow-2xl"
+                            alt="Enlarged view"
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </main>
     );
 }
