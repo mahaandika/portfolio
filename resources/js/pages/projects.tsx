@@ -195,6 +195,8 @@ export default function ProjectsPage({
                                                 // 3. Ambil gambar pertama dari relasi images
                                                 src={`/storage/${project.thumbnail}`}
                                                 alt={project.title}
+                                                loading="lazy"
+                                                decoding="async"
                                                 className="h-full w-full object-cover"
                                             />
                                             <div className="absolute top-6 right-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
