@@ -57,7 +57,7 @@ export default function ProjectShow({ project }: { project: any }) {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative mb-20 aspect-video cursor-pointer overflow-hidden bg-secondary/5"
+                        className="relative mb-20 aspect-4/3 cursor-pointer overflow-hidden bg-secondary/5"
                     >
                         <img
                             src={`/storage/${project.thumbnail}`}
@@ -117,7 +117,7 @@ export default function ProjectShow({ project }: { project: any }) {
                                 <h3 className="mb-6 font-heading text-3xl font-bold">
                                     The Challenge
                                 </h3>
-                                <p className="mb-12 font-body text-lg leading-relaxed text-secondary/80">
+                                <p className="mb-12 font-body text-lg leading-relaxed whitespace-pre-line text-secondary/80">
                                     {project.description}
                                 </p>
 
@@ -149,7 +149,7 @@ export default function ProjectShow({ project }: { project: any }) {
                                                         ease: 'easeOut',
                                                     }}
                                                     viewport={{ once: true }} // Animasi hanya jalan sekali saja
-                                                    className="group relative aspect-square cursor-pointer overflow-hidden bg-secondary/5"
+                                                    className="group relative aspect-auto cursor-pointer overflow-hidden bg-secondary/5"
                                                 >
                                                     <img
                                                         src={`/storage/${img.image_path}`}
