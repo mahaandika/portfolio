@@ -99,7 +99,7 @@ function ProjectItem({
 
                 {/* 2. Text Content */}
                 <div className="flex w-full flex-col md:w-1/2">
-                    <h3 className="font-heading text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
+                    <h3 className="font-heading text-4xl font-bold md:text-5xl lg:text-6xl">
                         {project.title}
                     </h3>
 
