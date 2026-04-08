@@ -137,12 +137,19 @@ const Create = ({ categories }: Props) => {
                                 Description
                             </label>
                             <textarea
-                                rows={4}
+                                rows={8} // Perbanyak baris agar lebih nyaman mengetik panjang
+                                value={data.description} // Tambahkan ini
                                 onChange={(e) =>
                                     setData('description', e.target.value)
                                 }
+                                placeholder="Tulis deskripsi detail di sini. Gunakan Enter untuk paragraf baru..."
                                 className="rounded-lg border border-gray-500 p-2.5 text-sm outline-none focus:ring-2 focus:ring-black"
                             ></textarea>
+                            {errors.description && (
+                                <span className="text-xs text-red-500">
+                                    {errors.description}
+                                </span>
+                            )}
                         </div>
 
                         {/* Thumbnail Upload */}
