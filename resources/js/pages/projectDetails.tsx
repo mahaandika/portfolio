@@ -29,10 +29,9 @@ export default function ProjectShow({ project }: { project: any }) {
                     </svg>
                     Back to Projects
                 </Link>
-                <div className="font-heading text-xl font-bold tracking-tighter">
+                <a href="/" className="font-heading text-xl font-bold">
                     AGUNG ANDIKA{' '}
-                    <span className="text-secondary/30">©2026</span>
-                </div>
+                </a>
             </nav>
 
             <article className="mb-5 px-6 py-12 md:px-16 lg:px-24">
