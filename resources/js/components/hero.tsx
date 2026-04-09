@@ -139,7 +139,7 @@ export default function Hero() {
 
     const handleCV = () => {
         const link = document.createElement('a');
-        link.href = '/docs/CV_agungAndika.pdf';
+        link.href = '/docs/CV_agungAndika1.pdf';
         link.target = '_blank';
         // link.download = 'CV_Agung_Andika.pdf';
         document.body.appendChild(link);
