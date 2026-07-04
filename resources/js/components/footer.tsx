@@ -33,7 +33,7 @@ export default function Footer({ variant = 'primary' }: FooterProps) {
         : 'bg-primary text-secondary';
 
     const socialLinks = [
-        { name: 'INSTAGRAM', href: 'https://www.instagram.com/mahaandika_/' },
+        { name: 'INSTAGRAM', href: 'https://www.instagram.com/gngandika/' },
         {
             name: 'LINKEDIN',
             href: 'https://www.linkedin.com/in/i-gusti-agung-andika/',
@@ -91,8 +91,7 @@ export default function Footer({ variant = 'primary' }: FooterProps) {
                     >
                         I AM AVAILABLE FOR A PROJECT.
                         <span className="block">
-                            LOOKING FOR A GRAPHIC DESIGNER OR WEB DEVELOPER?
-                            JUST GET IN TOUCH.
+                            NEED A CREATIVE PARTNER? <br /> JUST GET IN TOUCH.
                         </span>
                     </p>
 
