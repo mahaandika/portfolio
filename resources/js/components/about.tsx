@@ -46,7 +46,7 @@ export default function About() {
         '✦ Hire Me ✦ Hire Me ✦ Hire Me ✦ Hire Me ✦ Hire Me ✦ Hire Me ✦ Hire Me ✦ Hire Me ';
 
     const paragraph =
-        'I’m someone who enjoys bringing ideas to life through design and code. As a Graphic Designer and Web Developer, I love creating digital experiences that are not only visually appealing but also easy to use and impactful. My goal is to create work that usable for everyone.';
+        "I'm a creative professional passionate about visual storytelling through content, design, and motion. As a Real Estate Creator, Visual Editor, Graphic Designer, and Web Developer, I enjoy transforming ideas into compelling visual experiences that inspire, engage, and leave a lasting impression.";
     const words = paragraph.split(' ');
 
     return (
