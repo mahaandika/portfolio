@@ -14,7 +14,7 @@ class HomeController extends Controller
     {
         return Inertia::render('home', [
             'categories'  => Category::all(),
-            'experiences' => Experience::orderBy('created_at', 'asc')->get(),
+            'experiences' => Experience::orderBy('created_at', 'desc')->get(),
             'projects'    => Project::with(['category', 'images'])->latest()->get(),
         ]);
     }
